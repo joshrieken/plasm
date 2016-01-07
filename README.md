@@ -58,7 +58,9 @@ Many thanks to Drew Olson (@drewolson) for his [talk at ElixirConf 2015](https:/
 
 ## Installation
 
-Add Plasm to your list of dependencies in `mix.exs`:
+Plasm is not yet available via Hex.
+
+<!-- Add Plasm to your list of dependencies in `mix.exs`:
 
 ``` elixir
 def deps do
@@ -73,6 +75,7 @@ def application do
   [applications: [:plasm]]
 end
 ```
+-->
 
 
 ## Copyright and License
