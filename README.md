@@ -2,7 +2,7 @@
 
 A composable query library for [Ecto](https://github.com/elixir-lang/ecto).
 
-:heart::heart::heart: Ecto, :cry::cry::cry: because I have to implement my own count and random and whatnot functions in all my projects.
+:heart::heart::heart: Ecto, :cry::cry::cry: because I have to implement my own composable functions for things like counting records, getting a random record, and whatnot in all my models/projects.
 
 NO MORE.
 
