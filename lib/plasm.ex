@@ -37,7 +37,7 @@ defmodule Plasm do
   def first(query, n) do
     query
     |> exclude_jammers
-    |> order_by_asc(:inserted_at)
+    |> order_by(asc: :inserted_at)
     |> limit(^n)
   end
 
@@ -126,30 +126,8 @@ defmodule Plasm do
   def last(query, n) do
     query
     |> exclude_jammers
-    |> order_by_desc(:inserted_at)
+    |> order_by(desc: :inserted_at)
     |> limit(^n)
-  end
-
-  def order_by_asc(query, field_name) when is_binary(field_name) do
-    field_name = String.to_atom(field_name)
-
-    query
-    |> order_by_asc(field_name)
-  end
-  def order_by_asc(query, field_name) when is_atom(field_name) do
-    query
-    |> order_by([x], asc: field(x, ^field_name))
-  end
-
-  def order_by_desc(query, field_name) when is_binary(field_name) do
-    field_name = String.to_atom(field_name)
-
-    query
-    |> order_by_desc(field_name)
-  end
-  def order_by_desc(query, field_name) when is_atom(field_name) do
-    query
-    |> order_by([x], desc: field(x, ^field_name))
   end
 
   def random(query) do
