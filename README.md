@@ -2,9 +2,9 @@
 
 [![Build Status](https://travis-ci.org/atomic-fads/plasm.svg?branch=master)](https://travis-ci.org/atomic-fads/plasm)
 
-A composable query library for [Ecto](https://github.com/elixir-lang/ecto).
+A generic composable query library for [Ecto](https://github.com/elixir-lang/ecto).
 
-:heart::heart::heart: Ecto, :cry::cry::cry: because I have to implement my own composable functions for things like counting records, getting a random record, and whatnot in all my models/projects.
+:heart::heart::heart: Ecto, :cry::cry::cry: because I have to implement my own composable query functions for things like counting records, getting a random record, and whatnot in all my models/projects.
 
 NO MORE.
 
@@ -45,9 +45,45 @@ Truffle |> Plasm.for_ids([3,6,9]) |> Repo.all
 MagicalElixir |> Plasm.random |> Repo.one
 ```
 
+### Using in Models
+
+You can import Plasm and use it directly in your models:
+
+``` elixir
+defmodule MyApp.SomeModel do
+  import Plasm
+
+  ...
+
+  def most_recent(query, n) do
+    query
+    |> order_by_desc(:inserted_at)
+    |> take(n)
+  end
+end
+```
+
+### Using with Phoenix
+
+If you want Plasm to be universally accessible in all your Phoenix models, you can add it to `web.ex`:
+
+``` elixir
+defmodule MyApp.Web do
+  ...
+
+  def model do
+    quote do
+      ...
+
+      import Plasm
+    end
+  end
+end
+```
+
 ## API
 
-```
+``` elixir
 Plasm.count(query)
 Plasm.count_distinct(query, field_name)
 Plasm.first(query)
