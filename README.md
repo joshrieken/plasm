@@ -45,6 +45,36 @@ Truffle |> Plasm.for_ids([3,6,9]) |> Repo.all
 MagicalElixir |> Plasm.random |> Repo.one
 ```
 
+## API
+
+```
+Plasm.count(query)
+Plasm.count_distinct(query, field_name)
+Plasm.first(query)
+Plasm.first(query, n)
+Plasm.for_id(query, id)
+Plasm.for_value(query, field_name, field_value)
+Plasm.for_value_not(query, field_name, field_value)
+Plasm.for_values(query, field_name, field_values)
+Plasm.for_values_not(query, field_name, field_values)
+Plasm.inserted_after(query, string_castable_to_ecto_datetime)
+Plasm.inserted_after_incl(query, string_castable_to_ecto_datetime)
+Plasm.inserted_before(query, string_castable_to_ecto_datetime)
+Plasm.inserted_before_incl(query, string_castable_to_ecto_datetime)
+Plasm.last(query)
+Plasm.last(query, n)
+Plasm.order_by_asc(query, field_name)
+Plasm.order_by_desc(query, field_name)
+Plasm.random(query)
+Plasm.random(query, n)
+Plasm.take(query, n)
+Plasm.uniq(query, field_name)
+Plasm.updated_after(query, string_castable_to_ecto_datetime)
+Plasm.updated_after_incl(query, string_castable_to_ecto_datetime)
+Plasm.updated_before(query, string_castable_to_ecto_datetime)
+Plasm.updated_before_incl(query, string_castable_to_ecto_datetime)
+```
+
 
 ## Inspiration
 
