@@ -90,7 +90,9 @@ Many thanks to Drew Olson (@drewolson) for his [talk at ElixirConf 2015](https:/
 
 ## Installation
 
-Plasm is not yet available via Hex.
+Plasm is not yet available via Hex. For now, point to this repo:
+
+    {:plasm, git: "https://github.com/atomic-fads/plasm.git", branch: "master"}
 
 <!-- Add Plasm to your list of dependencies in `mix.exs`:
 
