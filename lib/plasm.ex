@@ -4,7 +4,7 @@ defmodule Plasm do
   def count(query) do
     query
     |> exclude_count_jammers
-    |> select([x], count("*"))
+    |> select([x], count(x.id))
   end
 
   def count_distinct(query, field_name) when is_binary(field_name) do
@@ -37,22 +37,51 @@ defmodule Plasm do
 
   def for_ids(query, ids) do
     query
-    |> for_value_in_list(:id, ids)
+    |> for_values(:id, ids)
   end
 
-  def for_value(query, field_name, field_value) do
+  def for_value(query, field_name, field_value) when is_binary(field_name) do
+    field_name = String.to_atom(field_name)
+
+    query
+    |> for_value(field_name, field_value)
+  end
+  def for_value(query, field_name, field_value) when is_atom(field_name) do
     query
     |> where([x], field(x, ^field_name) == ^field_value)
   end
 
-  def for_value_in_list(query, field_name, value_list) do
+  def for_value_not(query, field_name, field_value) when is_binary(field_name) do
+    field_name = String.to_atom(field_name)
+
     query
-    |> where([x], field(x, ^field_name) in ^value_list)
+    |> for_value_not(field_name, field_value)
+  end
+  def for_value_not(query, field_name, field_value) when is_atom(field_name) do
+    query
+    |> where([x], field(x, ^field_name) != ^field_value)
   end
 
-  def for_value_not_in_list(query, field_name, value_list) do
+  def for_values(query, field_name, field_values) when is_binary(field_name) do
+    field_name = String.to_atom(field_name)
+
     query
-    |> where([x], not field(x, ^field_name) in ^value_list)
+    |> for_values(field_name, field_values)
+  end
+  def for_values(query, field_name, field_values) when is_atom(field_name) do
+    query
+    |> where([x], field(x, ^field_name) in ^field_values)
+  end
+
+  def for_values_not(query, field_name, field_values) when is_binary(field_name) do
+    field_name = String.to_atom(field_name)
+
+    query
+    |> for_values_not(field_name, field_values)
+  end
+  def for_values_not(query, field_name, field_values) when is_atom(field_name) do
+    query
+    |> where([x], not field(x, ^field_name) in ^field_values)
   end
 
   def inserted_after(query, castable) do
@@ -81,25 +110,51 @@ defmodule Plasm do
 
   def last(query) do
     query
+    |> last(1)
+  end
+  def last(query, n) do
+    query
     |> exclude_jammers
     |> order_by_desc(:inserted_at)
-    |> limit(1)
+    |> limit(^n)
   end
 
-  def order_by_asc(query, field_name) do
+  def order_by_asc(query, field_name) when is_binary(field_name) do
+    field_name = String.to_atom(field_name)
+
+    query
+    |> order_by_asc(field_name)
+  end
+  def order_by_asc(query, field_name) when is_atom(field_name) do
     query
     |> order_by([x], asc: field(x, ^field_name))
   end
 
-  def random(query) do
-    query
-    |> order_by([_], fragment("random()"))
-    |> limit(1)
-  end
+  def order_by_desc(query, field_name) when is_binary(field_name) do
+    field_name = String.to_atom(field_name)
 
-  def order_by_desc(query, field_name) do
+    query
+    |> order_by_desc(field_name)
+  end
+  def order_by_desc(query, field_name) when is_atom(field_name) do
     query
     |> order_by([x], desc: field(x, ^field_name))
+  end
+
+  def random(query) do
+    query
+    |> random(1)
+  end
+  def random(query, n) do
+    # env = Application.get_env(:plasm, Plasm.Repo)
+    # random_fragment = case env[:adapter] do
+    #   Ecto.Adapters.Postgres -> "RANDOM()"
+    #   Ecto.Adapters.MySQL -> "RAND()"
+    # end
+
+    query
+    |> order_by([_], fragment("RANDOM()"))
+    |> limit(^n)
   end
 
   def take(query, n) do
@@ -107,11 +162,13 @@ defmodule Plasm do
     |> limit(^n)
   end
 
-  def uniq(query, field_name) when is_boolean(field_name) do
+  def uniq(query, field_name) when is_binary(field_name) do
+    field_name = String.to_atom(field_name)
+
     query
-    |> distinct([_], ^field_name)
+    |> uniq(field_name)
   end
-  def uniq(query, field_name) do
+  def uniq(query, field_name) when is_atom(field_name) do
     query
     |> distinct([x], field(x, ^field_name))
   end
