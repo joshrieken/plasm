@@ -19,6 +19,17 @@ defmodule Plasm do
     |> select([x], count(field(x, ^field_name), :distinct))
   end
 
+  def distinct_by(query, field_name) when is_binary(field_name) do
+    field_name = String.to_atom(field_name)
+
+    query
+    |> distinct_by(field_name)
+  end
+  def distinct_by(query, field_name) when is_atom(field_name) do
+    query
+    |> distinct([x], field(x, ^field_name))
+  end
+
   def first(query) do
     query
     |> first(1)
@@ -155,22 +166,6 @@ defmodule Plasm do
     query
     |> order_by([_], fragment("RANDOM()"))
     |> limit(^n)
-  end
-
-  def take(query, n) do
-    query
-    |> limit(^n)
-  end
-
-  def uniq(query, field_name) when is_binary(field_name) do
-    field_name = String.to_atom(field_name)
-
-    query
-    |> uniq(field_name)
-  end
-  def uniq(query, field_name) when is_atom(field_name) do
-    query
-    |> distinct([x], field(x, ^field_name))
   end
 
   def updated_after(query, castable) do
