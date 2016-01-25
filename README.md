@@ -2,11 +2,20 @@
 
 [![Build Status](https://travis-ci.org/atomic-fads/plasm.svg?branch=master)](https://travis-ci.org/atomic-fads/plasm)
 
-A generic composable query library for [Ecto](https://github.com/elixir-lang/ecto).
+A generic [composable query](http://blog.drewolson.org/composable-queries-ecto/) library for [Ecto](https://github.com/elixir-lang/ecto).
 
-:heart::heart::heart: Ecto, :cry::cry::cry: because I have to implement my own composable query functions for things like counting records, getting a random record, and whatnot in all my models/projects.
+:heart::heart::heart: Ecto, :cry::cry::cry: because I have to implement my own composable query functions for things like counting records, getting a random record and whatnot in all my models/projects.
 
 NO MORE.
+
+
+## Design Objectives
+
+[X] Work alongside `Ecto.Query` so both can be `import`ed without conflict
+[X] Avoid reimplementing `Ecto.Query` functionality where possible
+[X] Easy integration with Phoenix
+[ ] Support all databases supported by Ecto (right now, use PostgreSQL for all functionality)
+[ ] Permissive API (e.g., most functions that accept an atom will alternatively accept a string)
 
 
 ## Examples
@@ -45,7 +54,7 @@ Truffle |> Plasm.for_ids([3,6,9]) |> Repo.all
 MagicalElixir |> Plasm.random |> Repo.one
 ```
 
-### Using in Models
+## Using in Models
 
 You can import Plasm and use it directly in your models:
 
@@ -63,7 +72,8 @@ defmodule MyApp.SomeModel do
 end
 ```
 
-### Using with Phoenix
+
+## Using with Phoenix
 
 If you want Plasm to be universally accessible in all your Phoenix models, you can add it to `web.ex`:
 
@@ -120,7 +130,6 @@ Many thanks to Drew Olson (@drewolson) for his [talk at ElixirConf 2015](https:/
 
 - [x] Tests
 - [ ] Hex docs
-- [ ] More functions
 
 
 ## Installation
