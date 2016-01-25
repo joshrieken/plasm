@@ -60,6 +60,9 @@ You can import Plasm and use it directly in your models:
 
 ``` elixir
 defmodule MyApp.SomeModel do
+  import Ecto.Changeset
+  import Ecto.Query
+  import Ecto.Schema
   import Plasm
 
   ...
