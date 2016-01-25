@@ -16,7 +16,7 @@ Instead of writing this in your model:
 ``` elixir
 def count(query) do
   for q in query,
-  select: count("*")
+  select: count(q.id)
 end
 ```
 
@@ -83,7 +83,7 @@ Many thanks to Drew Olson (@drewolson) for his [talk at ElixirConf 2015](https:/
 
 ## TODO:
 
-- [ ] Tests
+- [x] Tests
 - [ ] Hex docs
 - [ ] More functions
 
