@@ -11,11 +11,11 @@ NO MORE.
 
 ## Design Objectives
 
-[X] Work alongside `Ecto.Query` so both can be `import`ed without conflict
-[X] Avoid reimplementing `Ecto.Query` functionality where possible
-[X] Easy integration with Phoenix
-[ ] Support all databases supported by Ecto (right now, use PostgreSQL for all functionality)
-[ ] Permissive API (e.g., most functions that accept an atom will alternatively accept a string)
+- [X] Work alongside `Ecto.Query` so both can be `import`ed without conflict
+- [X] Avoid reimplementing `Ecto.Query` functionality where possible
+- [X] Easy integration with Phoenix
+- [ ] Support all databases supported by Ecto (right now, use PostgreSQL for all functionality)
+- [ ] Permissive API (e.g., most functions that accept an atom will alternatively accept a string)
 
 
 ## Examples
