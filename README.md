@@ -133,6 +133,7 @@ Plasm.updated_before(query, ecto_datetime)
 Plasm.updated_before(query, string_castable_to_ecto_datetime)
 Plasm.updated_before_incl(query, ecto_datetime)
 Plasm.updated_before_incl(query, string_castable_to_ecto_datetime)
+Plasm.where_all(query, field_names_and_values)
 ```
 
 

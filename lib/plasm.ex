@@ -221,6 +221,15 @@ defmodule Plasm do
     |> updated_before_incl(ecto_date_time)
   end
 
+  def where_all(query, field_names_and_values) when is_list(field_names_and_values) do
+    Enum.reduce(field_names_and_values, query, fn (field_name_and_value, query) ->
+      [field_name, field_value] = Tuple.to_list(field_name_and_value)
+
+      query
+      |> where([x], field(x, ^field_name) == ^field_value)
+    end)
+  end
+
   # PRIVATE ######################################
 
   defp exclude_exclusive_fields_for_count(query) do
