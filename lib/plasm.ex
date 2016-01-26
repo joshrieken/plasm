@@ -8,7 +8,6 @@ defmodule Plasm do
 
   def count(query) do
     query
-    |> exclude_exclusive_fields_for_count
     |> select([x], count(x.id))
   end
 
@@ -20,7 +19,6 @@ defmodule Plasm do
   end
   def count_distinct(query, field_name) when is_atom(field_name) do
     query
-    |> exclude_exclusive_fields_for_count
     |> select([x], count(field(x, ^field_name), :distinct))
   end
 
@@ -55,7 +53,6 @@ defmodule Plasm do
   end
   def first(query, n) do
     query
-    |> exclude_all_exclusive_fields
     |> order_by(asc: :inserted_at)
     |> limit(^n)
   end
@@ -106,7 +103,6 @@ defmodule Plasm do
   end
   def last(query, n) do
     query
-    |> exclude_all_exclusive_fields
     |> order_by(desc: :inserted_at)
     |> limit(^n)
   end
@@ -192,17 +188,7 @@ defmodule Plasm do
 
   # PRIVATE ######################################
 
-  defp exclude_exclusive_fields_for_count(query) do
-    query
-    |> exclude_all_exclusive_fields
-  end
 
-  defp exclude_all_exclusive_fields(query) do
-    query
-    |> exclude(:order_by)
-    |> exclude(:preload)
-    |> exclude(:select)
-  end
 
   defp primary_key(query) do
     [key] = model(query).__schema__(:primary_key)
