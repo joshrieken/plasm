@@ -177,10 +177,11 @@ defmodule Plasm do
     |> updated_before_incl(ecto_date_time)
   end
 
-  def where_all(query, field_names_and_values) when is_list(field_names_and_values) do
-    Enum.reduce(field_names_and_values, query, fn ({field_name, field_value}, query) ->
-      generate_where_clause_for_where_all(query, field_name, field_value)
-    end)
+  def where_all(query, field_names_and_values) do
+    contains_at_least_one_list = Keyword.values(field_names_and_values)
+                                 |> Enum.any?(fn (value) -> is_list(value) end)
+    query
+    |> do_where_all(field_names_and_values, contains_at_least_one_list)
   end
 
   def where_none(query, field_names_and_values) do
@@ -229,5 +230,16 @@ defmodule Plasm do
   def generate_where_clause_for_where_none(query, field_name, field_value) do
     query
     |> where([x], field(x, ^field_name) != ^field_value)
+  end
+
+  def do_where_all(query, field_names_and_values, true) do
+    Enum.reduce(field_names_and_values, query, fn ({field_name, field_value}, query) ->
+      generate_where_clause_for_where_all(query, field_name, field_value)
+    end)
+  end
+
+  def do_where_all(query, field_names_and_values, false) do
+    query
+    |> where(^field_names_and_values)
   end
 end

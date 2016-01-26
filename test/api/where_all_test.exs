@@ -2,16 +2,18 @@ defmodule Plasm.Api.WhereAllTest do
   use Plasm.ApiCase
 
   test ".where_all with two fields" do
+    name = "Bill"
+    age = 23
+
     plasm_query_string =
       Plasm.User
-      |> Plasm.where_all(name: "Bill", age: 23)
+      |> Plasm.where_all(name: name, age: age)
       |> query_to_string
 
     ecto_query_string =
       Ecto.Query.from(
         u in Plasm.User,
-        where: u.name == ^"Bill",
-        where: u.age == ^23
+        where: u.name == ^name and u.age == ^age
       )
       |> query_to_string
 
