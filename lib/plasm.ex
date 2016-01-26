@@ -104,28 +104,44 @@ defmodule Plasm do
     |> where([x], not field(x, ^field_name) in ^field_values)
   end
 
-  def inserted_after(query, castable) do
-    {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
+  def inserted_after(query, %Ecto.DateTime{} = ecto_date_time) do
     query
     |> where([x], x.inserted_at > ^ecto_date_time)
   end
-
-  def inserted_after_incl(query, castable) do
+  def inserted_after(query, castable) do
     {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
+    query
+    |> inserted_after(ecto_date_time)
+  end
+
+  def inserted_after_incl(query, %Ecto.DateTime{} = ecto_date_time) do
     query
     |> where([x], x.inserted_at >= ^ecto_date_time)
   end
-
-  def inserted_before(query, castable) do
+  def inserted_after_incl(query, castable) do
     {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
+    query
+    |> inserted_after_incl(ecto_date_time)
+  end
+
+  def inserted_before(query, %Ecto.DateTime{} = ecto_date_time) do
     query
     |> where([x], x.inserted_at < ^ecto_date_time)
   end
+  def inserted_before(query, castable) do
+    {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
+    query
+    |> inserted_before(ecto_date_time)
+  end
 
+  def inserted_before_incl(query, %Ecto.DateTime{} = ecto_date_time) do
+    query
+    |> where([x], x.inserted_at <= ^ecto_date_time)
+  end
   def inserted_before_incl(query, castable) do
     {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
     query
-    |> where([x], x.inserted_at <= ^ecto_date_time)
+    |> inserted_before_incl(ecto_date_time)
   end
 
   def last(query) do
@@ -165,28 +181,44 @@ defmodule Plasm do
     |> select([x], sum(field(x, ^field_name)))
   end
 
-  def updated_after(query, castable) do
-    {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
+  def updated_after(query, %Ecto.DateTime{} = ecto_date_time) do
     query
     |> where([x], x.updated_at > ^ecto_date_time)
   end
-
-  def updated_after_incl(query, castable) do
+  def updated_after(query, castable) do
     {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
+    query
+    |> updated_after(ecto_date_time)
+  end
+
+  def updated_after_incl(query, %Ecto.DateTime{} = ecto_date_time) do
     query
     |> where([x], x.updated_at >= ^ecto_date_time)
   end
-
-  def updated_before(query, castable) do
+  def updated_after_incl(query, castable) do
     {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
+    query
+    |> updated_after_incl(ecto_date_time)
+  end
+
+  def updated_before(query, %Ecto.DateTime{} = ecto_date_time) do
     query
     |> where([x], x.updated_at < ^ecto_date_time)
   end
+  def updated_before(query, castable) do
+    {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
+    query
+    |> updated_before(ecto_date_time)
+  end
 
+  def updated_before_incl(query, %Ecto.DateTime{} = ecto_date_time) do
+    query
+    |> where([x], x.updated_at <= ^ecto_date_time)
+  end
   def updated_before_incl(query, castable) do
     {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
     query
-    |> where([x], x.updated_at <= ^ecto_date_time)
+    |> updated_before_incl(ecto_date_time)
   end
 
   # PRIVATE ######################################
