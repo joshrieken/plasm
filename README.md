@@ -43,7 +43,7 @@ Quaffle |> Plasm.count |> Repo.one
 More examples:
 
 ``` elixir
-Boggart |> Plasm.updated_after("2016-01-04T14:00:00Z") |> Plasm.take(10) |> Repo.all
+Boggart |> Plasm.updated_after("2016-01-04T14:00:00Z") |> Repo.all
 ```
 
 ``` elixir
@@ -60,17 +60,16 @@ You can import Plasm and use it directly in your models:
 
 ``` elixir
 defmodule MyApp.SomeModel do
-  import Ecto.Changeset
   import Ecto.Query
-  import Ecto.Schema
   import Plasm
 
   ...
 
-  def most_recent(query, n) do
+  def random_distinct_names_by_order_of_insertion(query, n) do
     query
-    |> order_by_desc(:inserted_at)
-    |> take(n)
+    |> order_by(asc: :name)
+    |> distinct_by(:name)
+    |> random(n)
   end
 end
 ```
