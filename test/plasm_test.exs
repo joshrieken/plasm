@@ -453,6 +453,38 @@ defmodule PlasmTest do
     assert plasm_query_string == ecto_query_string
   end
 
+  test ".max" do
+    plasm_query_string =
+      Plasm.User
+      |> Plasm.max(:age)
+      |> query_to_string
+
+    ecto_query_string =
+      Ecto.Query.from(
+        u in Plasm.User,
+        select: max(u.age)
+      )
+      |> query_to_string
+
+    assert plasm_query_string == ecto_query_string
+  end
+
+  test ".min" do
+    plasm_query_string =
+      Plasm.User
+      |> Plasm.min(:age)
+      |> query_to_string
+
+    ecto_query_string =
+      Ecto.Query.from(
+        u in Plasm.User,
+        select: min(u.age)
+      )
+      |> query_to_string
+
+    assert plasm_query_string == ecto_query_string
+  end
+
   test ".random for PostgreSQL" do
     plasm_query_string =
       Plasm.User
@@ -464,6 +496,22 @@ defmodule PlasmTest do
         u in Plasm.User,
         order_by: fragment("RANDOM()"),
         limit: ^1
+      )
+      |> query_to_string
+
+    assert plasm_query_string == ecto_query_string
+  end
+
+  test ".sum" do
+    plasm_query_string =
+      Plasm.User
+      |> Plasm.sum(:age)
+      |> query_to_string
+
+    ecto_query_string =
+      Ecto.Query.from(
+        u in Plasm.User,
+        select: sum(u.age)
       )
       |> query_to_string
 

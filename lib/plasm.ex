@@ -135,6 +135,16 @@ defmodule Plasm do
     |> limit(^n)
   end
 
+  def max(query, field_name) do
+    query
+    |> select([x], max(field(x, ^field_name)))
+  end
+
+  def min(query, field_name) do
+    query
+    |> select([x], min(field(x, ^field_name)))
+  end
+
   def random(query) do
     query
     |> random(1)
@@ -144,6 +154,11 @@ defmodule Plasm do
     query
     |> order_by([_], fragment("RANDOM()"))
     |> limit(^n)
+  end
+
+  def sum(query, field_name) do
+    query
+    |> select([x], sum(field(x, ^field_name)))
   end
 
   def updated_after(query, castable) do
