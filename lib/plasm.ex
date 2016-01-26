@@ -39,14 +39,14 @@ defmodule Plasm do
     key = primary_key(query)
 
     query
-    |> for_values(key, ids)
+    |> where_all([{key, ids}])
   end
 
   def find(query, id) do
     key = primary_key(query)
 
     query
-    |> for_value(key, id)
+    |> where_all([{key, id}])
   end
 
   def first(query) do
@@ -58,50 +58,6 @@ defmodule Plasm do
     |> exclude_all_exclusive_fields
     |> order_by(asc: :inserted_at)
     |> limit(^n)
-  end
-
-  def for_value(query, field_name, field_value) when is_binary(field_name) do
-    field_name = String.to_atom(field_name)
-
-    query
-    |> for_value(field_name, field_value)
-  end
-  def for_value(query, field_name, field_value) when is_atom(field_name) do
-    query
-    |> where([x], field(x, ^field_name) == ^field_value)
-  end
-
-  def for_value_not(query, field_name, field_value) when is_binary(field_name) do
-    field_name = String.to_atom(field_name)
-
-    query
-    |> for_value_not(field_name, field_value)
-  end
-  def for_value_not(query, field_name, field_value) when is_atom(field_name) do
-    query
-    |> where([x], field(x, ^field_name) != ^field_value)
-  end
-
-  def for_values(query, field_name, field_values) when is_binary(field_name) do
-    field_name = String.to_atom(field_name)
-
-    query
-    |> for_values(field_name, field_values)
-  end
-  def for_values(query, field_name, field_values) when is_atom(field_name) do
-    query
-    |> where([x], field(x, ^field_name) in ^field_values)
-  end
-
-  def for_values_not(query, field_name, field_values) when is_binary(field_name) do
-    field_name = String.to_atom(field_name)
-
-    query
-    |> for_values_not(field_name, field_values)
-  end
-  def for_values_not(query, field_name, field_values) when is_atom(field_name) do
-    query
-    |> where([x], not field(x, ^field_name) in ^field_values)
   end
 
   def inserted_after(query, %Ecto.DateTime{} = ecto_date_time) do
