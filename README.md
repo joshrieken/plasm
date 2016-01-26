@@ -98,6 +98,7 @@ end
 ## API
 
 ``` elixir
+Plasm.avg(query, field_name)
 Plasm.count(query)
 Plasm.count_distinct(query, field_name)
 Plasm.distinct_by(query, field_name)

@@ -1,6 +1,11 @@
 defmodule Plasm do
   import Ecto.Query
 
+  def avg(query, field_name) do
+    query
+    |> select([x], avg(field(x, ^field_name)))
+  end
+
   def count(query) do
     query
     |> exclude_count_jammers
@@ -176,6 +181,6 @@ defmodule Plasm do
     query
     |> exclude(:order_by)
     |> exclude(:preload)
-    |> exclude(:select)
+
   end
 end
