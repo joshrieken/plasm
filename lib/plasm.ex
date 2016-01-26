@@ -8,7 +8,7 @@ defmodule Plasm do
 
   def count(query) do
     query
-    |> exclude_count_jammers
+    |> exclude_exclusive_fields_for_count
     |> select([x], count(x.id))
   end
 
@@ -20,7 +20,7 @@ defmodule Plasm do
   end
   def count_distinct(query, field_name) when is_atom(field_name) do
     query
-    |> exclude_count_jammers
+    |> exclude_exclusive_fields_for_count
     |> select([x], count(field(x, ^field_name), :distinct))
   end
 
@@ -35,25 +35,29 @@ defmodule Plasm do
     |> distinct([x], field(x, ^field_name))
   end
 
+  def find(query, ids) when is_list(ids) do
+    key = primary_key(query)
+
+    query
+    |> for_values(key, ids)
+  end
+
+  def find(query, id) do
+    key = primary_key(query)
+
+    query
+    |> for_value(key, id)
+  end
+
   def first(query) do
     query
     |> first(1)
   end
   def first(query, n) do
     query
-    |> exclude_jammers
+    |> exclude_all_exclusive_fields
     |> order_by(asc: :inserted_at)
     |> limit(^n)
-  end
-
-  def for_id(query, id) do
-    query
-    |> for_value(:id, id)
-  end
-
-  def for_ids(query, ids) do
-    query
-    |> for_values(:id, ids)
   end
 
   def for_value(query, field_name, field_value) when is_binary(field_name) do
@@ -130,7 +134,7 @@ defmodule Plasm do
   end
   def last(query, n) do
     query
-    |> exclude_jammers
+    |> exclude_all_exclusive_fields
     |> order_by(desc: :inserted_at)
     |> limit(^n)
   end
@@ -187,15 +191,25 @@ defmodule Plasm do
 
   # PRIVATE ######################################
 
-  defp exclude_count_jammers(query) do
+  defp exclude_exclusive_fields_for_count(query) do
     query
-    |> exclude_jammers
+    |> exclude_all_exclusive_fields
   end
 
-  defp exclude_jammers(query) do
+  defp exclude_all_exclusive_fields(query) do
     query
     |> exclude(:order_by)
     |> exclude(:preload)
-
+    |> exclude(:select)
   end
+
+  defp primary_key(query) do
+    [key] = model(query).__schema__(:primary_key)
+    key
+  end
+
+  def model(%Ecto.Query{from: {_table_name, model_or_query}}) do
+    model(model_or_query)
+  end
+  def model(model), do: model
 end
