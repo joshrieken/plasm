@@ -135,12 +135,7 @@ defmodule Plasm do
     |> random(1)
   end
   def random(query, n) do
-    # env = Application.get_env(:plasm, Plasm.Repo)
-    # random_fragment = case env[:adapter] do
-    #   Ecto.Adapters.Postgres -> "RANDOM()"
-    #   Ecto.Adapters.MySQL -> "RAND()"
-    # end
-
+    # TODO: support databases other than postgres
     query
     |> order_by([_], fragment("RANDOM()"))
     |> limit(^n)
