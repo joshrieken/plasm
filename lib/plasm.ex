@@ -222,9 +222,7 @@ defmodule Plasm do
   end
 
   def where_all(query, field_names_and_values) when is_list(field_names_and_values) do
-    Enum.reduce(field_names_and_values, query, fn (field_name_and_value, query) ->
-      [field_name, field_value] = Tuple.to_list(field_name_and_value)
-
+    Enum.reduce(field_names_and_values, query, fn ({field_name, field_value}, query) ->
       query
       |> where([x], field(x, ^field_name) == ^field_value)
     end)
