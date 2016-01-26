@@ -128,6 +128,8 @@ Plasm.updated_before_incl(query, string_castable_to_ecto_datetime)
 
 Many thanks to Drew Olson (@drewolson) for his [talk at ElixirConf 2015](https://www.youtube.com/watch?v=g84TDHt9MDc) and [insightful blog post](http://blog.drewolson.org/composable-queries-ecto/) on the subject of composable Ecto queries.
 
+Also thanks to Henrik Nyh for his [Ectoo](https://github.com/henrik/ectoo) project, which has similar aims.
+
 
 ## TODO:
 
