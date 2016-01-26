@@ -223,8 +223,13 @@ defmodule Plasm do
 
   def where_all(query, field_names_and_values) when is_list(field_names_and_values) do
     Enum.reduce(field_names_and_values, query, fn ({field_name, field_value}, query) ->
-      query
-      |> where([x], field(x, ^field_name) == ^field_value)
+      generate_where_clause_for_where_all(query, field_name, field_value)
+    end)
+  end
+
+  def where_none(query, field_names_and_values) do
+    Enum.reduce(field_names_and_values, query, fn ({field_name, field_value}, query) ->
+      generate_where_clause_for_where_none(query, field_name, field_value)
     end)
   end
 
@@ -251,4 +256,22 @@ defmodule Plasm do
     model(model_or_query)
   end
   def model(model), do: model
+
+  def generate_where_clause_for_where_all(query, field_name, field_value) when is_list(field_value) do
+    query
+    |> where([x], field(x, ^field_name) in ^field_value)
+  end
+  def generate_where_clause_for_where_all(query, field_name, field_value) do
+    query
+    |> where([x], field(x, ^field_name) == ^field_value)
+  end
+
+  def generate_where_clause_for_where_none(query, field_name, field_value) when is_list(field_value) do
+    query
+    |> where([x], not field(x, ^field_name) in ^field_value)
+  end
+  def generate_where_clause_for_where_none(query, field_name, field_value) do
+    query
+    |> where([x], field(x, ^field_name) != ^field_value)
+  end
 end
