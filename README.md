@@ -8,7 +8,7 @@ A generic [composable query](http://blog.drewolson.org/composable-queries-ecto/)
 
 NO MORE.
 
-Plasm provides a set of generic, composable, higher-level functions that make working with Ecto more joyful.
+Plasm provides a set of generic, composable, higher-level functions that make working with Ecto more joyful and productive.
 
 
 ## Design Objectives
