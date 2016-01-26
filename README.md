@@ -48,7 +48,7 @@ Boggart |> Plasm.updated_after("2016-01-04T14:00:00Z") |> Repo.all
 ```
 
 ``` elixir
-Truffle |> Plasm.for_ids([3,6,9]) |> Repo.all
+Truffle |> Plasm.find([3,6,9]) |> Repo.all
 ```
 
 ``` elixir
