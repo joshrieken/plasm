@@ -18,8 +18,8 @@ Plasm provides a set of generic, composable, higher-level functions that make wo
 - [X] Avoid reimplementing basic `Ecto.Query` functionality where possible
 - [X] Provide syntactic sugar for common queries (e.g., see `count` and `distinct_by`)
 - [X] Easy integration with Phoenix
+- [X] Permissive API (e.g., most functions that accept an atom will alternatively accept a string)
 - [ ] Support all databases supported by Ecto (right now, use PostgreSQL for all functionality)
-- [ ] Permissive API (e.g., most functions that accept an atom will alternatively accept a string)
 
 
 ## Examples
@@ -152,7 +152,7 @@ Also thanks to Henrik Nyh for his [Ectoo](https://github.com/henrik/ectoo) proje
 ## TODO:
 
 - [x] Tests
-- [ ] Hex docs
+- [x] Hex docs
 
 
 ## Installation
