@@ -43,9 +43,9 @@ defmodule Plasm.Mixfile do
   defp deps do
     [
       {:ecto, "~> 1.0"},
-      {:ex_doc, "~> 0.11", only: :dev},
-      {:earmark, "~> 0.1", only: :dev},
-      {:inch_ex, only: :dev},
+      {:ex_doc, "~> 0.11", only: :docs},
+      {:earmark, "~> 0.1", only: :docs},
+      {:inch_ex, only: :docs},
       {:postgrex, "> 0.0.0", optional: true},
       {:mix_test_watch, "~> 0.2", only: :dev},
     ]
