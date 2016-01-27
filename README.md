@@ -136,6 +136,11 @@ Plasm.where_none(query, field_names_and_values)
 ```
 
 
+## Note About DB Support
+
+Plasm aims to support all DBs supported by Ecto, but we're not quite there yet. Right now, the only functions that don't work cross-DB are `random\1` and `random\2`, which are supported only on PostgreSQL for now.
+
+
 ## Inspiration
 
 Many thanks to Drew Olson (@drewolson) for his [talk at ElixirConf 2015](https://www.youtube.com/watch?v=g84TDHt9MDc) and [insightful blog post](http://blog.drewolson.org/composable-queries-ecto/) on the subject of composable Ecto queries.
