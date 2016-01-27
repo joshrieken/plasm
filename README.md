@@ -156,15 +156,11 @@ Also thanks to Henrik Nyh for his [Ectoo](https://github.com/henrik/ectoo) proje
 
 ## Installation
 
-Plasm is not yet available via Hex. For now, point to this repo:
-
-    {:plasm, git: "https://github.com/atomic-fads/plasm.git", branch: "master"}
-
-<!-- Add Plasm to your list of dependencies in `mix.exs`:
+Add Plasm to your list of dependencies in `mix.exs`:
 
 ``` elixir
 def deps do
-  [{:plasm, "~> 0.0.1"}]
+  [{:plasm, "~> 0.1.0"}]
 end
 ```
 
@@ -172,10 +168,21 @@ Ensure Plasm is started before your application:
 
 ``` elixir
 def application do
-  [applications: [:plasm]]
+  [
+    applications: [
+      ...
+      :plasm
+      ...
+    ]
+  ]
 end
 ```
--->
+
+If you want to be on the bleeding edge, track the `master` branch of this repo:
+
+``` elixir
+{:plasm, git: "https://github.com/atomic-fads/plasm.git", branch: "master"}
+```
 
 
 ## Copyright and License
