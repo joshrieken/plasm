@@ -71,7 +71,7 @@ defmodule MyApp.SomeModel do
 
   def random_distinct_names_by_order_of_insertion(query, n) do
     query
-    |> order_by(asc: :name)
+    |> order_by(asc: :inserted_at)
     |> distinct_by(:name)
     |> random(n)
   end
