@@ -1,6 +1,7 @@
 # Plasm
 
 [![Build Status](https://travis-ci.org/atomic-fads/plasm.svg?branch=master)](https://travis-ci.org/atomic-fads/plasm)
+[![Inline docs](http://inch-ci.org/github/atomic-fads/plasm.svg)](http://inch-ci.org/github/atomic-fads/plasm)
 
 A generic [composable query](http://blog.drewolson.org/composable-queries-ecto/) library for [Ecto](https://github.com/elixir-lang/ecto).
 
