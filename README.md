@@ -27,35 +27,41 @@ Plasm provides a set of generic, composable, higher-level functions that make wo
 Instead of writing this in your model:
 
 ``` elixir
-def count(query) do
-  for q in query,
-  select: count(q.id)
+defmodule MyGhostBustingApp.ProtonPack
+  ...
+
+  def count(query) do
+    for q in query,
+    select: count(q.id)
+  end
+
+  ...
 end
 ```
 
 And using it this way:
 ``` elixir
-Quaffle |> Quaffle.count |> Repo.one
+ProtonPack |> ProtonPack.count |> Repo.one
 ```
 
 Just use Plasm:
 
 ``` elixir
-Quaffle |> Plasm.count |> Repo.one
+ProtonPack |> Plasm.count |> Repo.one
 ```
 
 More examples:
 
 ``` elixir
-Boggart |> Plasm.updated_after("2016-01-04T14:00:00Z") |> Repo.all
+PkeMeter |> Plasm.updated_after("2016-01-04T14:00:00Z") |> Repo.all
 ```
 
 ``` elixir
-Truffle |> Plasm.find([3,6,9]) |> Repo.all
+GhostTrap |> Plasm.find([3,6,9]) |> Repo.all
 ```
 
 ``` elixir
-MagicalElixir |> Plasm.random |> Repo.one
+StayPuftMarshmallowMan |> Plasm.random |> Repo.one
 ```
 
 ## Using in Models
