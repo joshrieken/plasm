@@ -150,9 +150,9 @@ Plasm aims to support all DBs supported by Ecto, but we're not quite there yet. 
 
 ## Inspiration
 
-Many thanks to Drew Olson (@drewolson) for his [talk at ElixirConf 2015](https://www.youtube.com/watch?v=g84TDHt9MDc) and [insightful blog post](http://blog.drewolson.org/composable-queries-ecto/) on the subject of composable Ecto queries.
+Many thanks to [Drew Olson](https://github.com/drewolson) for his [talk at ElixirConf 2015](https://www.youtube.com/watch?v=g84TDHt9MDc) and [insightful blog post](http://blog.drewolson.org/composable-queries-ecto/) on the subject of composable Ecto queries.
 
-Also thanks to Henrik Nyh for his [Ectoo](https://github.com/henrik/ectoo) project, which has similar aims.
+Also thanks to [Henrik Nyh](https://github.com/henrik) for his [Ectoo](https://github.com/henrik/ectoo) project, which has similar aims.
 
 
 ## TODO:
