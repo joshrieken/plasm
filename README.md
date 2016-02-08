@@ -151,9 +151,9 @@ Plasm aims to support all DBs supported by Ecto, but we're not quite there yet. 
 
 ## Note On Query Syntaxes
 
-Ecto supports two query syntaxes, **keyword** and **query expressions**.
+Ecto supports two query syntaxes, **keyword** and **query expression**.
 
-Example of the keyword syntax:
+Example of the **keyword** syntax:
 
 ``` elixir
 def for_name_or_age(query, name, age) do
@@ -162,7 +162,7 @@ def for_name_or_age(query, name, age) do
 end
 ```
 
-Example of the query expressions syntax:
+Example of the **query expression** syntax:
 
 ``` elixir
 def for_name_or_age(query, name, age) do
@@ -171,7 +171,7 @@ def for_name_or_age(query, name, age) do
 end
 ```
 
-The keyword syntax is a bit easier on the eyes, but is not fully compatible with Plasm. A case can be made for sticking with the query expressions syntax for all functions that are meant to be composable, and especially if you plan to use Plasm or something like it.
+The keyword syntax is a bit easier on the eyes, but is not fully compatible with Plasm. A case can be made for sticking with the query expression syntax for all functions that are meant to be composable, and especially if you plan to use Plasm or something like it.
 
 
 ## Inspiration
