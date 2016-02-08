@@ -40,6 +40,7 @@ end
 ```
 
 And using it this way:
+
 ``` elixir
 ProtonPack |> ProtonPack.count |> Repo.one
 ```
@@ -143,9 +144,34 @@ Plasm.where_none(query, field_names_and_values)
 ```
 
 
-## Note About DB Support
+## Note On DB Support
 
 Plasm aims to support all DBs supported by Ecto, but we're not quite there yet. Right now, the only functions that don't work cross-DB are `random\1` and `random\2`, which are supported only on PostgreSQL for now.
+
+
+## Note On Query Syntaxes
+
+Ecto supports two query syntaxes, **keyword** and **query expressions**.
+
+Example of the keyword syntax:
+
+``` elixir
+def for_name_or_age(query, name, age) do
+  for x in query,
+  where: x.name == ^name or x.age == ^age
+end
+```
+
+Example of the query expressions syntax:
+
+``` elixir
+def for_name_or_age(query, name, age) do
+  query
+  |> where([x], x.name == ^name or x.age == ^age)
+end
+```
+
+The keyword syntax is a bit easier on the eyes, but is not fully compatible with Plasm. A case can be made for sticking with the query expressions syntax for all functions that are meant to be composable, and especially if you plan to use Plasm or something like it.
 
 
 ## Inspiration
