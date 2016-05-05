@@ -1,10 +1,10 @@
-defmodule Plasm.Api.LastTest do
+defmodule Plasm.Api.LastInsertedTest do
   use Plasm.ApiCase
 
-  test ".last" do
+  test ".last_inserted" do
     plasm_query_string =
       Plasm.User
-      |> Plasm.last
+      |> Plasm.last_inserted
       |> query_to_string
 
     ecto_query_string =
@@ -18,12 +18,12 @@ defmodule Plasm.Api.LastTest do
     assert plasm_query_string == ecto_query_string
   end
 
-  test ".last with an integer arg" do
+  test ".last_inserted with an integer arg" do
     num_results = 15
 
     plasm_query_string =
       Plasm.User
-      |> Plasm.last(num_results)
+      |> Plasm.last_inserted(num_results)
       |> query_to_string
 
     ecto_query_string =

@@ -1,10 +1,10 @@
-defmodule Plasm.Api.FirstTest do
+defmodule Plasm.Api.FirstInsertedTest do
   use Plasm.ApiCase
 
-  test ".first" do
+  test ".first_inserted" do
     plasm_query_string =
       Plasm.User
-      |> Plasm.first
+      |> Plasm.first_inserted
       |> query_to_string
 
     ecto_query_string =
@@ -18,12 +18,12 @@ defmodule Plasm.Api.FirstTest do
     assert plasm_query_string == ecto_query_string
   end
 
-  test ".first with an integer arg" do
+  test ".first_inserted with an integer arg" do
     num_results = 15
 
     plasm_query_string =
       Plasm.User
-      |> Plasm.first(num_results)
+      |> Plasm.first_inserted(num_results)
       |> query_to_string
 
     ecto_query_string =

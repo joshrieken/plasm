@@ -94,9 +94,9 @@ defmodule Plasm do
 
       Puppy |> Plasm.first |> Repo.one
   """
-  def first(query) do
+  def first_inserted(query) do
     query
-    |> first(1)
+    |> first_inserted(1)
   end
 
   @doc """
@@ -104,7 +104,7 @@ defmodule Plasm do
 
       Puppy |> Plasm.first(20) |> Repo.all
   """
-  def first(query, n) do
+  def first_inserted(query, n) do
     query
     |> order_by(asc: :inserted_at)
     |> limit(^n)
@@ -199,9 +199,9 @@ defmodule Plasm do
 
       Puppy |> Plasm.last |> Repo.one
   """
-  def last(query) do
+  def last_inserted(query) do
     query
-    |> last(1)
+    |> last_inserted(1)
   end
 
   @doc """
@@ -209,7 +209,7 @@ defmodule Plasm do
 
       Puppy |> Plasm.last(20) |> Repo.all
   """
-  def last(query, n) do
+  def last_inserted(query, n) do
     query
     |> order_by(desc: :inserted_at)
     |> limit(^n)
