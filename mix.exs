@@ -52,7 +52,7 @@ defmodule Plasm.Mixfile do
 
   defp description do
     """
-    Plasm is a composable query library for Ecto containing several common query transforms to make working with Ecto easier.
+    Composable query convenience functions for Ecto
     """
   end
 
