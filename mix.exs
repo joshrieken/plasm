@@ -5,17 +5,17 @@ defmodule Plasm.Mixfile do
 
   def project do
     [
-      app: :plasm,
-      version: @version,
-      elixir: "~> 1.0",
-      elixirc_paths: elixirc_paths(Mix.env),
-      build_embedded: Mix.env == :prod,
+      app:             :plasm,
+      version:         @version,
+      elixir:          "~> 1.0",
+      elixirc_paths:   elixirc_paths(Mix.env),
+      build_embedded:  Mix.env == :prod,
       start_permanent: Mix.env == :prod,
-      deps: deps,
-      description: description,
-      package: package,
-      aliases: aliases,
-      docs: [extras: ["README.md", "CHANGELOG.md"]],
+      deps:            deps,
+      description:     description,
+      package:         package,
+      aliases:         aliases,
+      docs:            [extras: ["README.md", "CHANGELOG.md"]],
     ]
   end
 
