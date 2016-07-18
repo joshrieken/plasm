@@ -60,7 +60,7 @@ defmodule Plasm.Mixfile do
     [
       maintainers: ["Joshua Rieken"],
       licenses: ["Apache 2.0"],
-      links: %{"GitHub" => "https://github.com/atomic-fads/plasm"},
+      links: %{"GitHub" => "https://github.com/facto/plasm"},
       files: ~w(mix.exs README.md CHANGELOG.md LICENSE.md lib),
     ]
   end

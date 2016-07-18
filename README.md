@@ -1,8 +1,8 @@
 # Plasm
 
-[![Build Status](https://travis-ci.org/atomic-fads/plasm.svg?branch=master)](https://travis-ci.org/atomic-fads/plasm)
-[![Deps Status](https://beta.hexfaktor.org/badge/all/github/atomic-fads/plasm.svg)](https://beta.hexfaktor.org/github/atomic-fads/plasm)
-[![Inline docs](http://inch-ci.org/github/atomic-fads/plasm.svg)](http://inch-ci.org/github/atomic-fads/plasm)
+[![Build Status](https://travis-ci.org/facto/plasm.svg?branch=master)](https://travis-ci.org/facto/plasm)
+[![Deps Status](https://beta.hexfaktor.org/badge/all/github/facto/plasm.svg)](https://beta.hexfaktor.org/github/facto/plasm)
+[![Inline docs](http://inch-ci.org/github/facto/plasm.svg)](http://inch-ci.org/github/facto/plasm)
 
 A generic [composable query](http://blog.drewolson.org/composable-queries-ecto/) library for [Ecto](https://github.com/elixir-lang/ecto).
 
@@ -215,12 +215,12 @@ end
 If you want to be on the bleeding edge, track the `master` branch of this repo:
 
 ``` elixir
-{:plasm, git: "https://github.com/atomic-fads/plasm.git", branch: "master"}
+{:plasm, git: "https://github.com/facto/plasm.git", branch: "master"}
 ```
 
 
 ## Copyright and License
 
-Copyright (c) 2016, Atomic Fads LLC.
+Copyright (c) 2016 Joshua Rieken.
 
 Plasm source code is licensed under the Apache 2 License (see LICENSE.md).
