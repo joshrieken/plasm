@@ -42,11 +42,11 @@ defmodule Plasm.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:ecto, "~> 1.0 or ~> 2.0.0-beta or ~> 2.0"},
-      {:ex_doc, "~> 0.11"},
-      {:earmark, "~> 0.1", only: :docs},
-      {:inch_ex, only: :docs},
-      {:postgrex, "> 0.0.0", optional: true},
+      {:ecto,     "~> 1.0 or ~> 2.0.0-beta or ~> 2.0"},
+      {:ex_doc,   "~> 0.11"},
+      {:earmark,  "~> 0.1",                             only: :docs},
+      {:inch_ex,  ">= 0.0.0",                           only: :docs},
+      {:postgrex, "> 0.0.0",                            optional: true},
     ]
   end
 
