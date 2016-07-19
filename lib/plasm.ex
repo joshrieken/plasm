@@ -5,7 +5,17 @@ defmodule Plasm do
   Builds an avg query for a given field.
 
       Puppy |> Plasm.avg(:age) |> Repo.one
+
+      Puppy |> Plasm.avg("name") |> Repo.one
   """
+  @spec avg(Ecto.Queryable, String.t) :: Ecto.Queryable
+  def avg(query, field_name) when is_binary(field_name) do
+    field_name = String.to_atom(field_name)
+
+    query
+    |> avg(field_name)
+  end
+  @spec avg(Ecto.Queryable, atom) :: Ecto.Queryable
   def avg(query, field_name) do
     query
     |> select([x], avg(field(x, ^field_name)))
@@ -16,72 +26,69 @@ defmodule Plasm do
 
       Puppy |> Plasm.count |> Repo.one
   """
+  @spec count(Ecto.Queryable) :: Ecto.Queryable
   def count(query) do
     query
     |> select([x], count(x.id))
   end
 
   @doc """
-  Builds a distinct count query for a given field (string).
+  Builds a distinct count query for a given field.
+
+      Puppy |> Plasm.count_distinct(:name) |> Repo.one
 
       Puppy |> Plasm.count_distinct("age") |> Repo.one
   """
+  @spec count_distinct(Ecto.Queryable, String.t) :: Ecto.Queryable
   def count_distinct(query, field_name) when is_binary(field_name) do
     field_name = String.to_atom(field_name)
 
     query
     |> count_distinct(field_name)
   end
-
-  @doc """
-  Builds a distinct count query for a given field (atom).
-
-      Puppy |> Plasm.count_distinct(:name) |> Repo.one
-  """
+  @spec count_distinct(Ecto.Queryable, atom) :: Ecto.Queryable
   def count_distinct(query, field_name) when is_atom(field_name) do
     query
     |> select([x], count(field(x, ^field_name), :distinct))
   end
 
   @doc """
-  Builds a distinct query for a given field (string).
+  Builds a distinct query for a given field.
+
+      Puppy |> Plasm.distinct_by(:age) |> Repo.all
 
       Puppy |> Plasm.distinct_by("name") |> Repo.all
   """
+  @spec distinct_by(Ecto.Queryable, String.t) :: Ecto.Queryable
   def distinct_by(query, field_name) when is_binary(field_name) do
     field_name = String.to_atom(field_name)
 
     query
     |> distinct_by(field_name)
   end
-
-  @doc """
-  Builds a distinct query for a given field (atom).
-
-      Puppy |> Plasm.distinct_by(:name) |> Repo.all
-  """
+  @spec distinct_by(Ecto.Queryable, atom) :: Ecto.Queryable
   def distinct_by(query, field_name) when is_atom(field_name) do
     query
     |> distinct([x], field(x, ^field_name))
   end
 
   @doc """
-  Builds a query that finds all records matching any of the primary key values in the provided list.
+  Builds a query that finds all records matching any of the primary key values in the provided list or value.
 
       Puppy |> Plasm.find([1,2,3]) |> Repo.all
+
+      Puppy |> Plasm.find(10) |> Repo.one
+
+      Puppy |> Plasm.find("748192739812839") |> Repo.one
   """
+  @spec find(Ecto.Queryable, list) :: Ecto.Queryable
   def find(query, primary_key_values) when is_list(primary_key_values) do
     key = primary_key(query)
 
     query
     |> where_all([{key, primary_key_values}])
   end
-
-  @doc """
-  Builds a query that finds the record matching the provided primary key value.
-
-      Puppy |> Plasm.find(10) |> Repo.one
-  """
+  @spec find(Ecto.Queryable, any) :: Ecto.Queryable
   def find(query, primary_key_value) do
     key = primary_key(query)
 
@@ -92,18 +99,18 @@ defmodule Plasm do
   @doc """
   Builds a query that finds the first record after sorting by `inserted_at` ascending.
 
+  Optionally, provide an integer `n` to find only the first `n` records.
+
       Puppy |> Plasm.first |> Repo.one
+
+      Puppy |> Plasm.first(20) |> Repo.all
   """
+  @spec first_inserted(Ecto.Queryable) :: Ecto.Queryable
   def first_inserted(query) do
     query
     |> first_inserted(1)
   end
-
-  @doc """
-  Builds a query that finds the first n records after sorting by `inserted_at` ascending.
-
-      Puppy |> Plasm.first(20) |> Repo.all
-  """
+  @spec first_inserted(Ecto.Queryable, integer) :: Ecto.Queryable
   def first_inserted(query, n) do
     query
     |> order_by(asc: :inserted_at)
@@ -114,17 +121,15 @@ defmodule Plasm do
   Builds a query that finds all records inserted after a specified `%Ecto.DateTime{}`.
 
       Puppy |> Plasm.inserted_after(ecto_date_time) |> Repo.all
+
+      Puppy |> Plasm.inserted_after("2014-04-17T14:00:00Z") |> Repo.all
   """
+  @spec inserted_after(Ecto.Queryable, %Ecto.DateTime{}) :: Ecto.Queryable
   def inserted_after(query, %Ecto.DateTime{} = ecto_date_time) do
     query
     |> where([x], x.inserted_at > ^ecto_date_time)
   end
-
-  @doc """
-  Builds a query that finds all records inserted after a specified string that is castable to `%Ecto.DateTime{}`.
-
-      Puppy |> Plasm.inserted_after("2014-04-17T14:00:00Z") |> Repo.all
-  """
+  @spec inserted_after(Ecto.Queryable, String.t) :: Ecto.Queryable
   def inserted_after(query, castable) do
     {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
     query
@@ -135,17 +140,15 @@ defmodule Plasm do
   Builds a query that finds all records inserted on or after a specified `%Ecto.DateTime{}`.
 
       Puppy |> Plasm.inserted_after_incl(ecto_date_time) |> Repo.all
+
+      Puppy |> Plasm.inserted_after_incl("2014-04-17T14:00:00Z") |> Repo.all
   """
+  @spec inserted_after(Ecto.Queryable, %Ecto.DateTime{}) :: Ecto.Queryable
   def inserted_after_incl(query, %Ecto.DateTime{} = ecto_date_time) do
     query
     |> where([x], x.inserted_at >= ^ecto_date_time)
   end
-
-  @doc """
-  Builds a query that finds all records inserted on or after a specified string that is castable to `%Ecto.DateTime{}`.
-
-      Puppy |> Plasm.inserted_after_incl("2014-04-17T14:00:00Z") |> Repo.all
-  """
+  @spec inserted_after(Ecto.Queryable, String.t) :: Ecto.Queryable
   def inserted_after_incl(query, castable) do
     {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
     query
@@ -156,17 +159,15 @@ defmodule Plasm do
   Builds a query that finds all records inserted before a specified `%Ecto.DateTime{}`.
 
       Puppy |> Plasm.inserted_before(ecto_date_time) |> Repo.all
+
+      Puppy |> Plasm.inserted_before("2014-04-17T14:00:00Z") |> Repo.all
   """
+  @spec inserted_before(Ecto.Queryable, %Ecto.DateTime{}) :: Ecto.Queryable
   def inserted_before(query, %Ecto.DateTime{} = ecto_date_time) do
     query
     |> where([x], x.inserted_at < ^ecto_date_time)
   end
-
-  @doc """
-  Builds a query that finds all records inserted before a specified string that is castable to `%Ecto.DateTime{}`.
-
-      Puppy |> Plasm.inserted_before("2014-04-17T14:00:00Z") |> Repo.all
-  """
+  @spec inserted_before(Ecto.Queryable, String.t) :: Ecto.Queryable
   def inserted_before(query, castable) do
     {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
     query
@@ -177,17 +178,15 @@ defmodule Plasm do
   Builds a query that finds all records inserted on or before a specified `%Ecto.DateTime{}`.
 
       Puppy |> Plasm.inserted_before_incl(ecto_date_time) |> Repo.all
+
+      Puppy |> Plasm.inserted_before_incl("2014-04-17T14:00:00Z") |> Repo.all
   """
+  @spec inserted_before_incl(Ecto.Queryable, %Ecto.DateTime{}) :: Ecto.Queryable
   def inserted_before_incl(query, %Ecto.DateTime{} = ecto_date_time) do
     query
     |> where([x], x.inserted_at <= ^ecto_date_time)
   end
-
-  @doc """
-  Builds a query that finds all records inserted on or before a specified string that is castable to `%Ecto.DateTime{}`.
-
-      Puppy |> Plasm.inserted_before_incl("2014-04-17T14:00:00Z") |> Repo.all
-  """
+  @spec inserted_before_incl(Ecto.Queryable, String.t) :: Ecto.Queryable
   def inserted_before_incl(query, castable) do
     {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
     query
@@ -197,18 +196,18 @@ defmodule Plasm do
   @doc """
   Builds a query that finds the last record after sorting by `inserted_at` ascending.
 
+  Optionally, provide an integer `n` to find only the last `n` records.
+
       Puppy |> Plasm.last |> Repo.one
+
+      Puppy |> Plasm.last(20) |> Repo.all
   """
+  @spec last_inserted(Ecto.Queryable) :: Ecto.Queryable
   def last_inserted(query) do
     query
     |> last_inserted(1)
   end
-
-  @doc """
-  Builds a query that finds the last n records after sorting by `inserted_at` ascending.
-
-      Puppy |> Plasm.last(20) |> Repo.all
-  """
+  @spec last_inserted(Ecto.Queryable, integer) :: Ecto.Queryable
   def last_inserted(query, n) do
     query
     |> order_by(desc: :inserted_at)
@@ -220,6 +219,7 @@ defmodule Plasm do
 
       Puppy |> Plasm.max(:age) |> Repo.one
   """
+  @spec max(Ecto.Queryable, atom) :: Ecto.Queryable
   def max(query, field_name) do
     query
     |> select([x], max(field(x, ^field_name)))
@@ -230,6 +230,7 @@ defmodule Plasm do
 
       Puppy |> Plasm.min(:age) |> Repo.one
   """
+  @spec min(Ecto.Queryable, atom) :: Ecto.Queryable
   def min(query, field_name) do
     query
     |> select([x], min(field(x, ^field_name)))
@@ -238,18 +239,18 @@ defmodule Plasm do
   @doc """
   Builds a query that grabs a random record.
 
+  Optionally, provide an integer `n` to fetch `n` random records.
+
       Puppy |> Plasm.random |> Repo.one
+
+      Puppy |> Plasm.random(20) |> Repo.all
   """
+  @spec random(Ecto.Queryable) :: Ecto.Queryable
   def random(query) do
     query
     |> random(1)
   end
-
-  @doc """
-  Builds a query that grabs n random records.
-
-      Puppy |> Plasm.random(20) |> Repo.all
-  """
+  @spec random(Ecto.Queryable, integer) :: Ecto.Queryable
   def random(query, n) do
     # TODO: support databases other than postgres
     query
@@ -262,6 +263,7 @@ defmodule Plasm do
 
       Puppy |> Plasm.sum(:age) |> Repo.one
   """
+  @spec sum(Ecto.Queryable, atom) :: Ecto.Queryable
   def sum(query, field_name) do
     query
     |> select([x], sum(field(x, ^field_name)))
@@ -271,17 +273,15 @@ defmodule Plasm do
   Builds a query that finds all records updated after a specified `%Ecto.DateTime{}`.
 
       Puppy |> Plasm.updated_after(ecto_date_time) |> Repo.all
+
+      Puppy |> Plasm.updated_after("2014-04-17T14:00:00Z") |> Repo.all
   """
+  @spec updated_after(Ecto.Queryable, %Ecto.DateTime{}) :: Ecto.Queryable
   def updated_after(query, %Ecto.DateTime{} = ecto_date_time) do
     query
     |> where([x], x.updated_at > ^ecto_date_time)
   end
-
-  @doc """
-  Builds a query that finds all records updated after a specified string that is castable to `%Ecto.DateTime{}`.
-
-      Puppy |> Plasm.updated_after("2014-04-17T14:00:00Z") |> Repo.all
-  """
+  @spec updated_after(Ecto.Queryable, String.t) :: Ecto.Queryable
   def updated_after(query, castable) do
     {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
     query
@@ -292,17 +292,15 @@ defmodule Plasm do
   Builds a query that finds all records updated on or after a specified `%Ecto.DateTime{}`.
 
       Puppy |> Plasm.updated_after_incl(ecto_date_time) |> Repo.all
+
+      Puppy |> Plasm.updated_after_incl("2014-04-17T14:00:00Z") |> Repo.all
   """
+  @spec updated_after_incl(Ecto.Queryable, %Ecto.DateTime{}) :: Ecto.Queryable
   def updated_after_incl(query, %Ecto.DateTime{} = ecto_date_time) do
     query
     |> where([x], x.updated_at >= ^ecto_date_time)
   end
-
-  @doc """
-  Builds a query that finds all records updated on or after a specified string that is castable to `%Ecto.DateTime{}`.
-
-      Puppy |> Plasm.updated_after_incl("2014-04-17T14:00:00Z") |> Repo.all
-  """
+  @spec updated_after_incl(Ecto.Queryable, String.t) :: Ecto.Queryable
   def updated_after_incl(query, castable) do
     {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
     query
@@ -313,17 +311,15 @@ defmodule Plasm do
   Builds a query that finds all records updated before a specified `%Ecto.DateTime{}`.
 
       Puppy |> Plasm.updated_before(ecto_date_time) |> Repo.all
+
+      Puppy |> Plasm.updated_before("2014-04-17T14:00:00Z") |> Repo.all
   """
+  @spec updated_before(Ecto.Queryable, %Ecto.DateTime{}) :: Ecto.Queryable
   def updated_before(query, %Ecto.DateTime{} = ecto_date_time) do
     query
     |> where([x], x.updated_at < ^ecto_date_time)
   end
-
-  @doc """
-  Builds a query that finds all records updated before a specified string that is castable to `%Ecto.DateTime{}`.
-
-      Puppy |> Plasm.updated_before("2014-04-17T14:00:00Z") |> Repo.all
-  """
+  @spec updated_before(Ecto.Queryable, String.t) :: Ecto.Queryable
   def updated_before(query, castable) do
     {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
     query
@@ -334,17 +330,15 @@ defmodule Plasm do
   Builds a query that finds all records updated on or before a specified `%Ecto.DateTime{}`.
 
       Puppy |> Plasm.updated_before_incl(ecto_date_time) |> Repo.all
+
+      Puppy |> Plasm.updated_before_incl("2014-04-17T14:00:00Z") |> Repo.all
   """
+  @spec updated_before_incl(Ecto.Queryable, %Ecto.DateTime{}) :: Ecto.Queryable
   def updated_before_incl(query, %Ecto.DateTime{} = ecto_date_time) do
     query
     |> where([x], x.updated_at <= ^ecto_date_time)
   end
-
-  @doc """
-  Builds a query that finds all records updated on or before a specified string that is castable to `%Ecto.DateTime{}`.
-
-      Puppy |> Plasm.updated_before_incl("2014-04-17T14:00:00Z") |> Repo.all
-  """
+  @spec updated_before_incl(Ecto.Queryable, String.t) :: Ecto.Queryable
   def updated_before_incl(query, castable) do
     {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
     query
@@ -364,6 +358,7 @@ defmodule Plasm do
 
       Puppy |> Plasm.where_all(name: "Fluffy", age: [3,5,10]) |> Repo.all
   """
+  @spec where_all(Ecto.Queryable, list) :: Ecto.Queryable
   def where_all(query, field_names_and_values) do
     contains_at_least_one_list = Keyword.values(field_names_and_values)
                                  |> Enum.any?(fn (value) -> is_list(value) end)
@@ -384,13 +379,17 @@ defmodule Plasm do
 
       Puppy |> Plasm.where_none(name: "Fluffy", age: [3,5,10]) |> Repo.all
   """
+  @spec where_all(Ecto.Queryable, list) :: Ecto.Queryable
   def where_none(query, field_names_and_values) do
     Enum.reduce(field_names_and_values, query, fn ({field_name, field_value}, query) ->
       generate_where_clause_for_where_none(query, field_name, field_value)
     end)
   end
 
-  # PRIVATE ######################################
+
+
+
+  # PRIVATE ##################################################
 
   defp primary_key(query) do
     [key] = model(query).__schema__(:primary_key)
