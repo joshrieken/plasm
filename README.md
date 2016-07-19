@@ -105,6 +105,8 @@ defmodule MyApp.Web do
 end
 ```
 
+**PLEASE NOTE:** `Plasm.min\2` and `Plasm.max\2` conflict with `Kernel.min\2` and `Kernel.max\2`, so if you're importing them, you'll need to prefix your calls with `__MODULE__`; e.g., `__MODULE__.min(query, field_name)`.
+
 
 ## API
 
