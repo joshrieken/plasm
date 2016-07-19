@@ -129,7 +129,7 @@ defmodule Plasm do
     query
     |> where([x], x.inserted_at > ^ecto_date_time)
   end
-  @spec inserted_after(Ecto.Queryable, String.t) :: Ecto.Queryable
+  @spec inserted_after(Ecto.Queryable, any) :: Ecto.Queryable
   def inserted_after(query, castable) do
     {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
     query
@@ -148,7 +148,7 @@ defmodule Plasm do
     query
     |> where([x], x.inserted_at >= ^ecto_date_time)
   end
-  @spec inserted_after(Ecto.Queryable, String.t) :: Ecto.Queryable
+  @spec inserted_after(Ecto.Queryable, any) :: Ecto.Queryable
   def inserted_after_incl(query, castable) do
     {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
     query
@@ -167,7 +167,7 @@ defmodule Plasm do
     query
     |> where([x], x.inserted_at < ^ecto_date_time)
   end
-  @spec inserted_before(Ecto.Queryable, String.t) :: Ecto.Queryable
+  @spec inserted_before(Ecto.Queryable, any) :: Ecto.Queryable
   def inserted_before(query, castable) do
     {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
     query
@@ -186,7 +186,7 @@ defmodule Plasm do
     query
     |> where([x], x.inserted_at <= ^ecto_date_time)
   end
-  @spec inserted_before_incl(Ecto.Queryable, String.t) :: Ecto.Queryable
+  @spec inserted_before_incl(Ecto.Queryable, any) :: Ecto.Queryable
   def inserted_before_incl(query, castable) do
     {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
     query
@@ -315,7 +315,7 @@ defmodule Plasm do
     query
     |> where([x], x.updated_at > ^ecto_date_time)
   end
-  @spec updated_after(Ecto.Queryable, String.t) :: Ecto.Queryable
+  @spec updated_after(Ecto.Queryable, any) :: Ecto.Queryable
   def updated_after(query, castable) do
     {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
     query
@@ -334,7 +334,7 @@ defmodule Plasm do
     query
     |> where([x], x.updated_at >= ^ecto_date_time)
   end
-  @spec updated_after_incl(Ecto.Queryable, String.t) :: Ecto.Queryable
+  @spec updated_after_incl(Ecto.Queryable, any) :: Ecto.Queryable
   def updated_after_incl(query, castable) do
     {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
     query
@@ -353,7 +353,7 @@ defmodule Plasm do
     query
     |> where([x], x.updated_at < ^ecto_date_time)
   end
-  @spec updated_before(Ecto.Queryable, String.t) :: Ecto.Queryable
+  @spec updated_before(Ecto.Queryable, any) :: Ecto.Queryable
   def updated_before(query, castable) do
     {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
     query
@@ -372,7 +372,7 @@ defmodule Plasm do
     query
     |> where([x], x.updated_at <= ^ecto_date_time)
   end
-  @spec updated_before_incl(Ecto.Queryable, String.t) :: Ecto.Queryable
+  @spec updated_before_incl(Ecto.Queryable, any) :: Ecto.Queryable
   def updated_before_incl(query, castable) do
     {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
     query
