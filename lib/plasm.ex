@@ -16,7 +16,7 @@ defmodule Plasm do
     |> avg(field_name)
   end
   @spec avg(Ecto.Queryable, atom) :: Ecto.Queryable
-  def avg(query, field_name) do
+  def avg(query, field_name) when is_atom(field_name) do
     query
     |> select([x], avg(field(x, ^field_name)))
   end
@@ -111,7 +111,7 @@ defmodule Plasm do
     |> first_inserted(1)
   end
   @spec first_inserted(Ecto.Queryable, integer) :: Ecto.Queryable
-  def first_inserted(query, n) do
+  def first_inserted(query, n) when is_integer(n) do
     query
     |> order_by(asc: :inserted_at)
     |> limit(^n)
@@ -208,7 +208,7 @@ defmodule Plasm do
     |> last_inserted(1)
   end
   @spec last_inserted(Ecto.Queryable, integer) :: Ecto.Queryable
-  def last_inserted(query, n) do
+  def last_inserted(query, n) when is_integer(n) do
     query
     |> order_by(desc: :inserted_at)
     |> limit(^n)
@@ -276,7 +276,7 @@ defmodule Plasm do
     |> random(1)
   end
   @spec random(Ecto.Queryable, integer) :: Ecto.Queryable
-  def random(query, n) do
+  def random(query, n) when is_integer(n) do
     # TODO: support databases other than postgres
     query
     |> order_by([_], fragment("RANDOM()"))
@@ -298,7 +298,7 @@ defmodule Plasm do
     |> sum(field_name)
   end
   @spec sum(Ecto.Queryable, atom) :: Ecto.Queryable
-  def sum(query, field_name) do
+  def sum(query, field_name) when is_atom(field_name) do
     query
     |> select([x], sum(field(x, ^field_name)))
   end
