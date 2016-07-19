@@ -6,7 +6,7 @@ defmodule Plasm do
 
       Puppy |> Plasm.avg(:age) |> Repo.one
 
-      Puppy |> Plasm.avg("name") |> Repo.one
+      Puppy |> Plasm.avg("age") |> Repo.one
   """
   @spec avg(Ecto.Queryable, String.t) :: Ecto.Queryable
   def avg(query, field_name) when is_binary(field_name) do
@@ -262,7 +262,16 @@ defmodule Plasm do
   Builds a sum query for a given field.
 
       Puppy |> Plasm.sum(:age) |> Repo.one
+
+      Puppy |> Plasm.sum("age") |> Repo.one
   """
+  @spec sum(Ecto.Queryable, String.t) :: Ecto.Queryable
+  def sum(query, field_name) when is_binary(field_name) do
+    field_name = String.to_atom(field_name)
+
+    query
+    |> sum(field_name)
+  end
   @spec sum(Ecto.Queryable, atom) :: Ecto.Queryable
   def sum(query, field_name) do
     query
