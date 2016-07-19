@@ -218,9 +218,25 @@ defmodule Plasm do
   Builds a max query for a given field.
 
       Puppy |> Plasm.max(:age) |> Repo.one
+
+      Puppy |> Plasm.max("age") |> Repo.one
   """
+  # @spec max(Ecto.Queryable, String.t) :: Ecto.Queryable
+  # def max(query, field_name) when is_binary(field_name) do
+  #   field_name = String.to_atom(field_name)
+  #
+  #   query
+  #   |> max(field_name)
+  # end
+  @spec max(Ecto.Queryable, String.t) :: Ecto.Queryable
+  def max(query, field_name) when is_binary(field_name) do
+    field_name = String.to_atom(field_name)
+
+    query
+    |> __MODULE__.max(field_name)
+  end
   @spec max(Ecto.Queryable, atom) :: Ecto.Queryable
-  def max(query, field_name) do
+  def max(query, field_name) when is_atom(field_name) do
     query
     |> select([x], max(field(x, ^field_name)))
   end
@@ -229,9 +245,18 @@ defmodule Plasm do
   Builds a min query for a given field.
 
       Puppy |> Plasm.min(:age) |> Repo.one
+
+      Puppy |> Plasm.min("age") |> Repo.one
   """
+  @spec min(Ecto.Queryable, String.t) :: Ecto.Queryable
+  def min(query, field_name) when is_binary(field_name) do
+    field_name = String.to_atom(field_name)
+
+    query
+    |> __MODULE__.min(field_name)
+  end
   @spec min(Ecto.Queryable, atom) :: Ecto.Queryable
-  def min(query, field_name) do
+  def min(query, field_name) when is_atom(field_name) do
     query
     |> select([x], min(field(x, ^field_name)))
   end
