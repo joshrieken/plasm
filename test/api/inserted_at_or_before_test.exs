@@ -1,4 +1,4 @@
-defmodule Plasm.Api.InsertedBeforeInclTest do
+defmodule Plasm.Api.InsertedAtOrBeforeTest do
   use Plasm.ApiCase
 
   test ".inserted_at_or_before with an Ecto.DateTime" do
