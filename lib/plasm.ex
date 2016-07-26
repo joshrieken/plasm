@@ -143,12 +143,12 @@ defmodule Plasm do
 
       Puppy |> Plasm.inserted_after_incl("2014-04-17T14:00:00Z") |> Repo.all
   """
-  @spec inserted_after(Ecto.Queryable, %Ecto.DateTime{}) :: Ecto.Queryable
+  @spec inserted_after_incl(Ecto.Queryable, %Ecto.DateTime{}) :: Ecto.Queryable
   def inserted_after_incl(query, %Ecto.DateTime{} = ecto_date_time) do
     query
     |> where([x], x.inserted_at >= ^ecto_date_time)
   end
-  @spec inserted_after(Ecto.Queryable, any) :: Ecto.Queryable
+  @spec inserted_after_incl(Ecto.Queryable, any) :: Ecto.Queryable
   def inserted_after_incl(query, castable) do
     {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
     query
