@@ -1,12 +1,12 @@
-defmodule Plasm.Api.UpdatedBeforeInclTest do
+defmodule Plasm.Api.UpdatedAtOrBeforeTest do
   use Plasm.ApiCase
 
-  test ".updated_before_incl with an Ecto.DateTime" do
+  test ".updated_at_or_before with an Ecto.DateTime" do
     ecto_date_time = Ecto.DateTime.utc
 
     plasm_query_string =
       Plasm.User
-      |> Plasm.updated_before_incl(ecto_date_time)
+      |> Plasm.updated_at_or_before(ecto_date_time)
       |> query_to_string
 
     ecto_query_string =
@@ -19,13 +19,13 @@ defmodule Plasm.Api.UpdatedBeforeInclTest do
     assert plasm_query_string == ecto_query_string
   end
 
-  test ".updated_before_incl with a castable Ecto.DateTime" do
+  test ".updated_at_or_before with a castable Ecto.DateTime" do
     castable_ecto_date_time = "2014-04-17T14:00:00Z"
     {:ok, ecto_date_time} = Ecto.DateTime.cast(castable_ecto_date_time)
 
     plasm_query_string =
       Plasm.User
-      |> Plasm.updated_before_incl(castable_ecto_date_time)
+      |> Plasm.updated_at_or_before(castable_ecto_date_time)
       |> query_to_string
 
     ecto_query_string =
