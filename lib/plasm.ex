@@ -139,20 +139,20 @@ defmodule Plasm do
   @doc """
   Builds a query that finds all records inserted on or after a specified `%Ecto.DateTime{}`.
 
-      Puppy |> Plasm.inserted_after_incl(ecto_date_time) |> Repo.all
+      Puppy |> Plasm.inserted_at_or_after(ecto_date_time) |> Repo.all
 
-      Puppy |> Plasm.inserted_after_incl("2014-04-17T14:00:00Z") |> Repo.all
+      Puppy |> Plasm.inserted_at_or_after("2014-04-17T14:00:00Z") |> Repo.all
   """
-  @spec inserted_after_incl(Ecto.Queryable, %Ecto.DateTime{}) :: Ecto.Queryable
-  def inserted_after_incl(query, %Ecto.DateTime{} = ecto_date_time) do
+  @spec inserted_at_or_after(Ecto.Queryable, %Ecto.DateTime{}) :: Ecto.Queryable
+  def inserted_at_or_after(query, %Ecto.DateTime{} = ecto_date_time) do
     query
     |> where([x], x.inserted_at >= ^ecto_date_time)
   end
-  @spec inserted_after_incl(Ecto.Queryable, any) :: Ecto.Queryable
-  def inserted_after_incl(query, castable) do
+  @spec inserted_at_or_after(Ecto.Queryable, any) :: Ecto.Queryable
+  def inserted_at_or_after(query, castable) do
     {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
     query
-    |> inserted_after_incl(ecto_date_time)
+    |> inserted_at_or_after(ecto_date_time)
   end
 
   @doc """
