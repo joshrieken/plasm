@@ -325,20 +325,20 @@ defmodule Plasm do
   @doc """
   Builds a query that finds all records updated on or after a specified `%Ecto.DateTime{}`.
 
-      Puppy |> Plasm.updated_after_incl(ecto_date_time) |> Repo.all
+      Puppy |> Plasm.updated_at_or_after(ecto_date_time) |> Repo.all
 
-      Puppy |> Plasm.updated_after_incl("2014-04-17T14:00:00Z") |> Repo.all
+      Puppy |> Plasm.updated_at_or_after("2014-04-17T14:00:00Z") |> Repo.all
   """
-  @spec updated_after_incl(Ecto.Queryable, %Ecto.DateTime{}) :: Ecto.Queryable
-  def updated_after_incl(query, %Ecto.DateTime{} = ecto_date_time) do
+  @spec updated_at_or_after(Ecto.Queryable, %Ecto.DateTime{}) :: Ecto.Queryable
+  def updated_at_or_after(query, %Ecto.DateTime{} = ecto_date_time) do
     query
     |> where([x], x.updated_at >= ^ecto_date_time)
   end
-  @spec updated_after_incl(Ecto.Queryable, any) :: Ecto.Queryable
-  def updated_after_incl(query, castable) do
+  @spec updated_at_or_after(Ecto.Queryable, any) :: Ecto.Queryable
+  def updated_at_or_after(query, castable) do
     {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
     query
-    |> updated_after_incl(ecto_date_time)
+    |> updated_at_or_after(ecto_date_time)
   end
 
   @doc """
