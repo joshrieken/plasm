@@ -2,6 +2,24 @@ defmodule Plasm do
   import Ecto.Query
 
   @doc """
+  Builds a query that finds all records at a specified field name, date, and time.
+
+      Puppy |> Plasm.at(ecto_date_time) |> Repo.all
+
+      Puppy |> Plasm.at("2014-04-17T14:00:00Z") |> Repo.all
+  """
+  @spec at(Ecto.Queryable, atom, %Ecto.DateTime{}) :: Ecto.Queryable
+  def at(query, field_name, %Ecto.DateTime{} = ecto_date_time) when is_atom(field_name) do
+    query
+    |> where([x], field(x, ^field_name) == type(^ecto_date_time, Ecto.DateTime))
+  end
+  @spec at(Ecto.Queryable, atom, any) :: Ecto.Queryable
+  def at(query, field_name, castable) when is_atom(field_name) do
+    {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
+    query
+    |> at(field_name, ecto_date_time)
+  end
+
   Builds an avg query for a given field.
 
       Puppy |> Plasm.avg(:age) |> Repo.one
