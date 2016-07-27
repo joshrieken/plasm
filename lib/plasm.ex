@@ -130,6 +130,34 @@ defmodule Plasm do
   end
 
   @doc """
+  Builds a query that finds all records before a specified field name and date or date and time.
+
+      Puppy |> Plasm.earlier_than(ecto_date_time) |> Repo.all
+
+      Puppy |> Plasm.earlier_than("2014-04-17") |> Repo.all
+  """
+  @spec earlier_than(Ecto.Queryable, atom, %Ecto.DateTime{}) :: Ecto.Queryable
+  def earlier_than(query, field_name, %Ecto.DateTime{} = ecto_date_time) when is_atom(field_name) do
+    query
+    |> where([x], field(x, ^field_name) < type(^ecto_date_time, Ecto.DateTime))
+  end
+  @spec earlier_than(Ecto.Queryable, atom, %Ecto.Date{}) :: Ecto.Queryable
+  def earlier_than(query, field_name, %Ecto.Date{} = ecto_date) when is_atom(field_name) do
+    query
+    |> where([x], field(x, ^field_name) < type(^ecto_date, Ecto.Date))
+  end
+  @spec earlier_than(Ecto.Queryable, atom, any) :: Ecto.Queryable
+  def earlier_than(query, field_name, castable) when is_atom(field_name) do
+    value = case Ecto.DateTime.cast(castable) do
+      {:ok, ecto_date_time} -> ecto_date_time
+      :error -> Ecto.Date.cast!(castable)
+    end
+
+    query
+    |> earlier_than(field_name, value)
+  end
+
+  @doc """
   Builds a query that finds all records matching any of the primary key values in the provided list or value.
 
       Puppy |> Plasm.find([1,2,3]) |> Repo.all
