@@ -1,4 +1,4 @@
-defmodule Plasm.AvgTest do
+defmodule Plasm.AverageTest do
   use Plasm.Case
 
   alias Decimal, as: D
@@ -8,31 +8,31 @@ defmodule Plasm.AvgTest do
 
   import Plasm.Factory
 
-  test ".avg with an atom field name" do
+  test ".average with an atom field name" do
     # Arrange
     insert(:user, age: 18)
     insert(:user, age: 40)
     insert(:user, age: 81)
 
     # Act
-    avg = User |> Plasm.avg(:age) |> Repo.one
+    average = User |> Plasm.average(:age) |> Repo.one
 
     # Assert
     D.set_context(%D.Context{D.get_context | precision: 18})
-    assert avg == D.div(D.new(139), D.new(3))
+    assert average == D.div(D.new(139), D.new(3))
   end
 
-  test ".avg with a String.t field name" do
+  test ".average with a String.t field name" do
     # Arrange
     insert(:user, age: 18)
     insert(:user, age: 40)
     insert(:user, age: 81)
 
     # Act
-    avg = User |> Plasm.avg("age") |> Repo.one
+    average = User |> Plasm.average("age") |> Repo.one
 
     # Assert
     D.set_context(%D.Context{D.get_context | precision: 18})
-    assert avg == D.div(D.new(139), D.new(3))
+    assert average == D.div(D.new(139), D.new(3))
   end
 end

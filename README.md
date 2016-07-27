@@ -105,8 +105,6 @@ defmodule MyApp.Web do
 end
 ```
 
-**PLEASE NOTE:** `Plasm.min\2` and `Plasm.max\2` conflict with `Kernel.min\2` and `Kernel.max\2`, so if you're importing them, you'll need to prefix your calls with `__MODULE__`; e.g., `__MODULE__.min(query, field_name)`.
-
 
 ## API
 
@@ -115,7 +113,7 @@ Plasm.at(query, field_name, ecto_date)
 Plasm.at_or_later_than(query, field_name, ecto_date)
 Plasm.at_or_earlier_than(query, field_name, ecto_date)
 Plasm.earlier_than(query, field_name, ecto_date_or_date_time)
-Plasm.avg(query, field_name)
+Plasm.average(query, field_name)
 Plasm.count(query)
 Plasm.count_distinct(query, field_name)
 Plasm.distinct_by(query, field_name)
@@ -126,17 +124,21 @@ Plasm.find(query, primary_keys)
 Plasm.later_than(query, field_name, ecto_date_or_date_time)
 Plasm.latest(query, field_name)
 Plasm.latest(query, field_name, n)
-Plasm.max(query, field_name)
-Plasm.min(query, field_name)
+Plasm.maximum(query, field_name)
+Plasm.minimum(query, field_name)
 Plasm.on(query, field_name, ecto_date)
 Plasm.on_or_later_than(query, field_name, ecto_date)
 Plasm.on_or_earlier_than(query, field_name, ecto_date)
 Plasm.random(query)
 Plasm.random(query, n)
-Plasm.sum(query, field_name)
+Plasm.total(query, field_name)
 Plasm.where_all(query, field_names_and_values)
 Plasm.where_none(query, field_names_and_values)
 ```
+
+### Why not use shorter names, like `avg`, `sum`, etc.?
+
+To avoid conflicts when `import`ing. For instance, `Plasm.min\2` and `Plasm.max\2` would conflict with `Kernel.min\2` and `Kernel.max\2`, so if you're importing them, you'd need to prefix your calls with `__MODULE__`; e.g., `__MODULE__.min(query, field_name)`. This sucks, so I chose to go with the longer versions and tried to stay consistent.
 
 
 ## Note On DB Support

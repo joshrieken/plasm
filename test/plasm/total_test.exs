@@ -1,4 +1,4 @@
-defmodule Plasm.SumTest do
+defmodule Plasm.TotalTest do
   use Plasm.Case
 
   alias Plasm.Repo
@@ -6,29 +6,29 @@ defmodule Plasm.SumTest do
 
   import Plasm.Factory
 
-  test ".sum with an atom field name" do
+  test ".total with an atom field name" do
     # Arrange
     insert(:user, age: 18)
     insert(:user, age: 40)
     insert(:user, age: 81)
 
     # Act
-    sum = User |> Plasm.sum(:age) |> Repo.one
+    total = User |> Plasm.total(:age) |> Repo.one
 
     # Assert
-    assert sum == 139
+    assert total == 139
   end
 
-  test ".sum with a String.t field name" do
+  test ".total with a String.t field name" do
     # Arrange
     insert(:user, age: 18)
     insert(:user, age: 40)
     insert(:user, age: 81)
 
     # Act
-    sum = User |> Plasm.sum("age") |> Repo.one
+    total = User |> Plasm.total("age") |> Repo.one
 
     # Assert
-    assert sum == 139
+    assert total == 139
   end
 end
