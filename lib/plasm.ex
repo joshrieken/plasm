@@ -20,6 +20,25 @@ defmodule Plasm do
     |> at(field_name, ecto_date_time)
   end
 
+  @doc """
+  Builds a query that finds all records at or after a specified field name, date, and time.
+
+      Puppy |> Plasm.at_or_later_than(ecto_date_time) |> Repo.all
+
+      Puppy |> Plasm.at_or_later_than("2014-04-17") |> Repo.all
+  """
+  @spec at_or_later_than(Ecto.Queryable, atom, %Ecto.DateTime{}) :: Ecto.Queryable
+  def at_or_later_than(query, field_name, %Ecto.DateTime{} = ecto_date_time) when is_atom(field_name) do
+    query
+    |> where([x], field(x, ^field_name) >= type(^ecto_date_time, Ecto.DateTime))
+  end
+  @spec at_or_later_than(Ecto.Queryable, atom, any) :: Ecto.Queryable
+  def at_or_later_than(query, field_name, castable) when is_atom(field_name) do
+    {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
+    query
+    |> at_or_later_than(field_name, ecto_date_time)
+  end
+
   Builds an avg query for a given field.
 
       Puppy |> Plasm.avg(:age) |> Repo.one
