@@ -182,44 +182,44 @@ defmodule Plasm do
   end
 
   @doc """
-  Builds a query that finds the first record after sorting by `inserted_at` ascending.
+  Builds a query that finds the first record after sorting by a specified field name ascending.
 
   Optionally, provide an integer `n` to find only the first `n` records.
 
-      Puppy |> Plasm.first |> Repo.one
+      Puppy |> Plasm.earliest(:inserted_at) |> Repo.one
 
-      Puppy |> Plasm.first(20) |> Repo.all
+      Puppy |> Plasm.earliest(:inserted_at, 20) |> Repo.all
   """
-  @spec first_inserted(Ecto.Queryable) :: Ecto.Queryable
-  def first_inserted(query) do
+  @spec earliest(Ecto.Queryable, atom) :: Ecto.Queryable
+  def earliest(query, field_name) when is_atom(field_name) do
     query
-    |> first_inserted(1)
+    |> earliest(field_name, 1)
   end
-  @spec first_inserted(Ecto.Queryable, integer) :: Ecto.Queryable
-  def first_inserted(query, n) when is_integer(n) do
+  @spec earliest(Ecto.Queryable, atom, integer) :: Ecto.Queryable
+  def earliest(query, field_name, n) when is_atom(field_name) and is_integer(n) do
     query
-    |> order_by(asc: :inserted_at)
+    |> order_by(asc: ^field_name)
     |> limit(^n)
   end
 
   @doc """
-  Builds a query that finds the last record after sorting by `inserted_at` ascending.
+  Builds a query that finds the last record after sorting by a specified field name ascending.
 
   Optionally, provide an integer `n` to find only the last `n` records.
 
-      Puppy |> Plasm.last |> Repo.one
+      Puppy |> Plasm.latest(:inserted_at) |> Repo.one
 
-      Puppy |> Plasm.last(20) |> Repo.all
+      Puppy |> Plasm.latest(:inserted_at, 20) |> Repo.all
   """
-  @spec last_inserted(Ecto.Queryable) :: Ecto.Queryable
-  def last_inserted(query) do
+  @spec latest(Ecto.Queryable, atom) :: Ecto.Queryable
+  def last_inserted(query, field_name) when is_atom(field_name) do
     query
-    |> last_inserted(1)
+    |> last_inserted(1, field_name)
   end
-  @spec last_inserted(Ecto.Queryable, integer) :: Ecto.Queryable
-  def last_inserted(query, n) when is_integer(n) do
+  @spec latest(Ecto.Queryable, atom, integer) :: Ecto.Queryable
+  def last_inserted(query, field_name, n) when is_atom(field_name) and is_integer(n) do
     query
-    |> order_by(desc: :inserted_at)
+    |> order_by(desc: ^field_name)
     |> limit(^n)
   end
 
