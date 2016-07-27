@@ -193,23 +193,28 @@ defmodule Plasm do
   end
 
   @doc """
-  Builds a query that finds all records inserted on or before a specified `%Ecto.DateTime{}`.
+  Builds a query that finds all records at or after a specified field name and `%Ecto.DateTime{}`.
 
-      Puppy |> Plasm.inserted_at_or_before(ecto_date_time) |> Repo.all
+      Puppy |> Plasm.later_than(ecto_date_time) |> Repo.all
 
-      Puppy |> Plasm.inserted_at_or_before("2014-04-17T14:00:00Z") |> Repo.all
+      Puppy |> Plasm.later_than("2014-04-17") |> Repo.all
   """
-  @spec inserted_at_or_before(Ecto.Queryable, %Ecto.DateTime{}) :: Ecto.Queryable
-  def inserted_at_or_before(query, %Ecto.DateTime{} = ecto_date_time) do
+  @spec later_than(Ecto.Queryable, atom, %Ecto.DateTime{}) :: Ecto.Queryable
+  def later_than(query, field_name, %Ecto.DateTime{} = ecto_date_time) when is_atom(field_name) do
     query
-    |> where([x], x.inserted_at <= ^ecto_date_time)
+    |> where([x], field(x, ^field_name) > type(^ecto_date_time, Ecto.DateTime))
   end
-  @spec inserted_at_or_before(Ecto.Queryable, any) :: Ecto.Queryable
-  def inserted_at_or_before(query, castable) do
-    {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
+  @spec later_than(Ecto.Queryable, atom, %Ecto.Date{}) :: Ecto.Queryable
+  def later_than(query, field_name, %Ecto.Date{} = ecto_date) when is_atom(field_name) do
     query
-    |> inserted_at_or_before(ecto_date_time)
+    |> where([x], field(x, ^field_name) > type(^ecto_date, Ecto.Date))
   end
+  @spec later_than(Ecto.Queryable, atom, any) :: Ecto.Queryable
+  def later_than(query, field_name, castable) when is_atom(field_name) do
+    value = case Ecto.DateTime.cast(castable) do
+      {:ok, ecto_date_time} -> ecto_date_time
+      :error -> Ecto.Date.cast!(castable)
+    end
 
   @doc """
   Builds a query that finds the last record after sorting by `inserted_at` ascending.
