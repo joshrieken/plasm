@@ -54,7 +54,7 @@ ProtonPack |> Plasm.count |> Repo.one
 More examples:
 
 ``` elixir
-PkeMeter |> Plasm.updated_after("2016-01-04T14:00:00Z") |> Repo.all
+PkeMeter |> Plasm.later_than(:updated_at, "2016-01-04T14:00:00Z") |> Repo.all
 ```
 
 ``` elixir
