@@ -59,21 +59,21 @@ defmodule Plasm do
   end
 
   @doc """
-  Builds an avg query for a given field.
+  Builds an average query for a given field.
 
-      Puppy |> Plasm.avg(:age) |> Repo.one
+      Puppy |> Plasm.average(:age) |> Repo.one
 
-      Puppy |> Plasm.avg("age") |> Repo.one
+      Puppy |> Plasm.average("age") |> Repo.one
   """
-  @spec avg(Ecto.Queryable, String.t) :: Ecto.Queryable
-  def avg(query, field_name) when is_binary(field_name) do
+  @spec average(Ecto.Queryable, String.t) :: Ecto.Queryable
+  def average(query, field_name) when is_binary(field_name) do
     field_name = String.to_atom(field_name)
 
     query
-    |> avg(field_name)
+    |> average(field_name)
   end
-  @spec avg(Ecto.Queryable, atom) :: Ecto.Queryable
-  def avg(query, field_name) when is_atom(field_name) do
+  @spec average(Ecto.Queryable, atom) :: Ecto.Queryable
+  def average(query, field_name) when is_atom(field_name) do
     query
     |> select([x], avg(field(x, ^field_name)))
   end
@@ -252,48 +252,48 @@ defmodule Plasm do
   end
 
   @doc """
-  Builds a max query for a given field.
+  Builds a maximum query for a given field.
 
-      Puppy |> Plasm.max(:age) |> Repo.one
+      Puppy |> Plasm.maximum(:age) |> Repo.one
 
-      Puppy |> Plasm.max("age") |> Repo.one
+      Puppy |> Plasm.maximum("age") |> Repo.one
   """
-  # @spec max(Ecto.Queryable, String.t) :: Ecto.Queryable
-  # def max(query, field_name) when is_binary(field_name) do
+  # @spec maximum(Ecto.Queryable, String.t) :: Ecto.Queryable
+  # def maximum(query, field_name) when is_binary(field_name) do
   #   field_name = String.to_atom(field_name)
   #
   #   query
-  #   |> max(field_name)
+  #   |> maximum(field_name)
   # end
-  @spec max(Ecto.Queryable, String.t) :: Ecto.Queryable
-  def max(query, field_name) when is_binary(field_name) do
+  @spec maximum(Ecto.Queryable, String.t) :: Ecto.Queryable
+  def maximum(query, field_name) when is_binary(field_name) do
     field_name = String.to_atom(field_name)
 
     query
-    |> __MODULE__.max(field_name)
+    |> __MODULE__.maximum(field_name)
   end
-  @spec max(Ecto.Queryable, atom) :: Ecto.Queryable
-  def max(query, field_name) when is_atom(field_name) do
+  @spec maximum(Ecto.Queryable, atom) :: Ecto.Queryable
+  def maximum(query, field_name) when is_atom(field_name) do
     query
     |> select([x], max(field(x, ^field_name)))
   end
 
   @doc """
-  Builds a min query for a given field.
+  Builds a minimum query for a given field.
 
-      Puppy |> Plasm.min(:age) |> Repo.one
+      Puppy |> Plasm.minimum(:age) |> Repo.one
 
-      Puppy |> Plasm.min("age") |> Repo.one
+      Puppy |> Plasm.minimum("age") |> Repo.one
   """
-  @spec min(Ecto.Queryable, String.t) :: Ecto.Queryable
-  def min(query, field_name) when is_binary(field_name) do
+  @spec minimum(Ecto.Queryable, String.t) :: Ecto.Queryable
+  def minimum(query, field_name) when is_binary(field_name) do
     field_name = String.to_atom(field_name)
 
     query
-    |> __MODULE__.min(field_name)
+    |> minimum(field_name)
   end
-  @spec min(Ecto.Queryable, atom) :: Ecto.Queryable
-  def min(query, field_name) when is_atom(field_name) do
+  @spec minimum(Ecto.Queryable, atom) :: Ecto.Queryable
+  def minimum(query, field_name) when is_atom(field_name) do
     query
     |> select([x], min(field(x, ^field_name)))
   end
@@ -396,19 +396,19 @@ defmodule Plasm do
   @doc """
   Builds a sum query for a given field.
 
-      Puppy |> Plasm.sum(:age) |> Repo.one
+      Puppy |> Plasm.total(:age) |> Repo.one
 
-      Puppy |> Plasm.sum("age") |> Repo.one
+      Puppy |> Plasm.total("age") |> Repo.one
   """
-  @spec sum(Ecto.Queryable, String.t) :: Ecto.Queryable
-  def sum(query, field_name) when is_binary(field_name) do
+  @spec total(Ecto.Queryable, String.t) :: Ecto.Queryable
+  def total(query, field_name) when is_binary(field_name) do
     field_name = String.to_atom(field_name)
 
     query
-    |> sum(field_name)
+    |> total(field_name)
   end
-  @spec sum(Ecto.Queryable, atom) :: Ecto.Queryable
-  def sum(query, field_name) when is_atom(field_name) do
+  @spec total(Ecto.Queryable, atom) :: Ecto.Queryable
+  def total(query, field_name) when is_atom(field_name) do
     query
     |> select([x], sum(field(x, ^field_name)))
   end
