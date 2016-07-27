@@ -4,13 +4,7 @@ defmodule Plasm.User do
   schema "users" do
     field :name, :string
     field :age,  :integer
-  end
-end
 
-defmodule Plasm.UserWithFooPrimaryKey do
-  use Ecto.Schema
-
-  @primary_key {:foo, :string, []}
-  schema "users2" do
+    timestamps
   end
 end

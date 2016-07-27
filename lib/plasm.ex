@@ -21,25 +21,6 @@ defmodule Plasm do
   end
 
   @doc """
-  Builds a query that finds all records at a specified date and time for a specified field name.
-
-      Puppy |> Plasm.at_or_later_than(:updated_at, ecto_date_time) |> Repo.all
-
-      Puppy |> Plasm.at_or_later_than(:updated_at, "2014-04-17") |> Repo.all
-  """
-  @spec at_or_later_than(Ecto.Queryable, atom, %Ecto.DateTime{}) :: Ecto.Queryable
-  def at_or_later_than(query, field_name, %Ecto.DateTime{} = ecto_date_time) when is_atom(field_name) do
-    query
-    |> where([x], field(x, ^field_name) >= type(^ecto_date_time, Ecto.DateTime))
-  end
-  @spec at_or_later_than(Ecto.Queryable, atom, any) :: Ecto.Queryable
-  def at_or_later_than(query, field_name, castable) when is_atom(field_name) do
-    {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
-    query
-    |> at_or_later_than(field_name, ecto_date_time)
-  end
-
-  @doc """
   Builds a query that finds all records at or before a specified date and time for a specified field name.
 
       Puppy |> Plasm.at_or_earlier_than(:updated_at, ecto_date_time) |> Repo.all
@@ -56,6 +37,25 @@ defmodule Plasm do
     {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
     query
     |> at_or_earlier_than(field_name, ecto_date_time)
+  end
+
+  @doc """
+  Builds a query that finds all records at a specified date and time for a specified field name.
+
+      Puppy |> Plasm.at_or_later_than(:updated_at, ecto_date_time) |> Repo.all
+
+      Puppy |> Plasm.at_or_later_than(:updated_at, "2014-04-17") |> Repo.all
+  """
+  @spec at_or_later_than(Ecto.Queryable, atom, %Ecto.DateTime{}) :: Ecto.Queryable
+  def at_or_later_than(query, field_name, %Ecto.DateTime{} = ecto_date_time) when is_atom(field_name) do
+    query
+    |> where([x], field(x, ^field_name) >= type(^ecto_date_time, Ecto.DateTime))
+  end
+  @spec at_or_later_than(Ecto.Queryable, atom, any) :: Ecto.Queryable
+  def at_or_later_than(query, field_name, castable) when is_atom(field_name) do
+    {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
+    query
+    |> at_or_later_than(field_name, ecto_date_time)
   end
 
   @doc """
@@ -132,7 +132,7 @@ defmodule Plasm do
   @doc """
   Builds a query that finds all records before a specified date or date and time for a specified field name.
 
-      Puppy |> Plasm.earlier_than(:updated_at, ecto_date_time) |> Repo.all
+      Puppy |> Plasm.earlier_than(:updated_at, ecto_date_or_date_time) |> Repo.all
 
       Puppy |> Plasm.earlier_than(:updated_at, "2014-04-17") |> Repo.all
   """
@@ -203,30 +203,9 @@ defmodule Plasm do
   end
 
   @doc """
-  Builds a query that finds the last record after sorting by a specified field name ascending.
-
-  Optionally, provide an integer `n` to find only the last `n` records.
-
-      Puppy |> Plasm.latest(:inserted_at) |> Repo.one
-
-      Puppy |> Plasm.latest(:inserted_at, 20) |> Repo.all
-  """
-  @spec latest(Ecto.Queryable, atom) :: Ecto.Queryable
-  def latest(query, field_name) when is_atom(field_name) do
-    query
-    |> latest(1, field_name)
-  end
-  @spec latest(Ecto.Queryable, atom, integer) :: Ecto.Queryable
-  def latest(query, field_name, n) when is_atom(field_name) and is_integer(n) do
-    query
-    |> order_by(desc: ^field_name)
-    |> limit(^n)
-  end
-
-  @doc """
   Builds a query that finds all records after a specified field name and date or date and time.
 
-      Puppy |> Plasm.later_than(ecto_date_time) |> Repo.all
+      Puppy |> Plasm.later_than(ecto_date_or_date_time) |> Repo.all
 
       Puppy |> Plasm.later_than("2014-04-17") |> Repo.all
   """
@@ -249,6 +228,27 @@ defmodule Plasm do
 
     query
     |> later_than(field_name, value)
+  end
+
+  @doc """
+  Builds a query that finds the last record after sorting by a specified field name ascending.
+
+  Optionally, provide an integer `n` to find only the last `n` records.
+
+      Puppy |> Plasm.latest(:inserted_at) |> Repo.one
+
+      Puppy |> Plasm.latest(:inserted_at, 20) |> Repo.all
+  """
+  @spec latest(Ecto.Queryable, atom) :: Ecto.Queryable
+  def latest(query, field_name) when is_atom(field_name) do
+    query
+    |> latest(1, field_name)
+  end
+  @spec latest(Ecto.Queryable, atom, integer) :: Ecto.Queryable
+  def latest(query, field_name, n) when is_atom(field_name) and is_integer(n) do
+    query
+    |> order_by(desc: ^field_name)
+    |> limit(^n)
   end
 
   @doc """
@@ -326,25 +326,6 @@ defmodule Plasm do
   end
 
   @doc """
-  Builds a query that finds all records on or after a specified date for a specified field name.
-
-      Puppy |> Plasm.on_or_later_than(ecto_date) |> Repo.all
-
-      Puppy |> Plasm.on_or_later_than("2014-04-17") |> Repo.all
-  """
-  @spec on_or_later_than(Ecto.Queryable, atom, %Ecto.Date{}) :: Ecto.Queryable
-  def on_or_later_than(query, field_name, %Ecto.Date{} = ecto_date) when is_atom(field_name) do
-    query
-    |> where([x], field(x, ^field_name) >= type(^ecto_date, Ecto.Date))
-  end
-  @spec on_or_later_than(Ecto.Queryable, atom, any) :: Ecto.Queryable
-  def on_or_later_than(query, field_name, castable) when is_atom(field_name) do
-    {:ok, ecto_date} = Ecto.Date.cast(castable)
-    query
-    |> on_or_later_than(field_name, ecto_date)
-  end
-
-  @doc """
   Builds a query that finds all records on or before a specified date for a specified field name.
 
       Puppy |> Plasm.on_or_earlier_than(ecto_date) |> Repo.all
@@ -369,6 +350,25 @@ defmodule Plasm do
     {:ok, ecto_date} = Ecto.Date.cast(castable)
     query
     |> on_or_earlier_than(field_name, ecto_date)
+  end
+
+  @doc """
+  Builds a query that finds all records on or after a specified date for a specified field name.
+
+      Puppy |> Plasm.on_or_later_than(ecto_date) |> Repo.all
+
+      Puppy |> Plasm.on_or_later_than("2014-04-17") |> Repo.all
+  """
+  @spec on_or_later_than(Ecto.Queryable, atom, %Ecto.Date{}) :: Ecto.Queryable
+  def on_or_later_than(query, field_name, %Ecto.Date{} = ecto_date) when is_atom(field_name) do
+    query
+    |> where([x], field(x, ^field_name) >= type(^ecto_date, Ecto.Date))
+  end
+  @spec on_or_later_than(Ecto.Queryable, atom, any) :: Ecto.Queryable
+  def on_or_later_than(query, field_name, castable) when is_atom(field_name) do
+    {:ok, ecto_date} = Ecto.Date.cast(castable)
+    query
+    |> on_or_later_than(field_name, ecto_date)
   end
 
   @doc """
@@ -447,7 +447,7 @@ defmodule Plasm do
 
       Puppy |> Plasm.where_none(name: "Fluffy", age: [3,5,10]) |> Repo.all
   """
-  @spec where_all(Ecto.Queryable, list) :: Ecto.Queryable
+  @spec where_none(Ecto.Queryable, list) :: Ecto.Queryable
   def where_none(query, field_names_and_values) do
     Enum.reduce(field_names_and_values, query, fn ({field_name, field_value}, query) ->
       generate_where_clause_for_where_none(query, field_name, field_value)

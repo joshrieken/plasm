@@ -23,13 +23,11 @@ defmodule Plasm.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [
-      applications: [
-        :logger,
-        :ecto,
-      ]
-    ]
+    [applications: applications(Mix.env)]
   end
+
+  defp applications(:test), do: [:logger, :ecto, :postgrex]
+  defp applications(_), do: [:logger, :ecto]
 
   # Dependencies can be Hex packages:
   #
@@ -42,7 +40,7 @@ defmodule Plasm.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:ecto,     "~> 1.0 or ~> 2.0-dev"},
+      {:ecto,       "~> 1.0 or ~> 2.0-dev"},
       {:ex_doc,     "~> 0.13",  only: [:dev]},
       {:earmark,    "~> 1.0.1", only: [:dev]},
       {:inch_ex,    "~> 0.5",   only: [:dev,     :test]},
@@ -71,6 +69,7 @@ defmodule Plasm.Mixfile do
 
   defp aliases do
     [
+      "test": ["ecto.create --quiet", "ecto.migrate", "test"],
       "test.setup": ["ecto.create", "ecto.migrate"],
       "test.reset": ["ecto.drop", "test.setup"],
     ]

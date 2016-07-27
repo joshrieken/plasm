@@ -4,7 +4,7 @@ defmodule Plasm.Factory do
   def user_factory do
     %Plasm.User{
       name: "Bill",
-      age:  "30",
+      age:  30,
     }
   end
 end
