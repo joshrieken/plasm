@@ -212,12 +212,12 @@ defmodule Plasm do
       Puppy |> Plasm.latest(:inserted_at, 20) |> Repo.all
   """
   @spec latest(Ecto.Queryable, atom) :: Ecto.Queryable
-  def last_inserted(query, field_name) when is_atom(field_name) do
+  def latest(query, field_name) when is_atom(field_name) do
     query
-    |> last_inserted(1, field_name)
+    |> latest(1, field_name)
   end
   @spec latest(Ecto.Queryable, atom, integer) :: Ecto.Queryable
-  def last_inserted(query, field_name, n) when is_atom(field_name) and is_integer(n) do
+  def latest(query, field_name, n) when is_atom(field_name) and is_integer(n) do
     query
     |> order_by(desc: ^field_name)
     |> limit(^n)
