@@ -259,18 +259,12 @@ defmodule Plasm do
       Puppy |> Plasm.maximum("age") |> Repo.one
   """
   # @spec maximum(Ecto.Queryable, String.t) :: Ecto.Queryable
-  # def maximum(query, field_name) when is_binary(field_name) do
-  #   field_name = String.to_atom(field_name)
-  #
-  #   query
-  #   |> maximum(field_name)
-  # end
   @spec maximum(Ecto.Queryable, String.t) :: Ecto.Queryable
   def maximum(query, field_name) when is_binary(field_name) do
     field_name = String.to_atom(field_name)
 
     query
-    |> __MODULE__.maximum(field_name)
+    |> maximum(field_name)
   end
   @spec maximum(Ecto.Queryable, atom) :: Ecto.Queryable
   def maximum(query, field_name) when is_atom(field_name) do
