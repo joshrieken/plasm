@@ -108,14 +108,15 @@ end
 ## API
 
 ``` elixir
-Plasm.at(query, field_name, ecto_date)
-Plasm.at_or_later_than(query, field_name, ecto_date)
-Plasm.at_or_earlier_than(query, field_name, ecto_date)
+Plasm.at(query, field_name, ecto_date_time)
+Plasm.at_or_later_than(query, field_name, ecto_date_time)
+Plasm.at_or_earlier_than(query, field_name, ecto_date_time)
 Plasm.earlier_than(query, field_name, ecto_date_or_date_time)
 Plasm.average(query, field_name)
 Plasm.count(query)
 Plasm.count_distinct(query, field_name)
 Plasm.distinct_by(query, field_name)
+Plasm.earlier_than(query, field_name, ecto_date_or_date_time)
 Plasm.earliest(query, field_name)
 Plasm.earliest(query, field_name, n)
 Plasm.find(query, primary_key)
