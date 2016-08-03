@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.1
+
+### Fixes
+
+* Fixed `latest/1` and its tests
+
+
 ## 1.0.0
 
 ### Additions
