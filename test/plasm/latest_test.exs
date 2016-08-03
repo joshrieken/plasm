@@ -8,7 +8,6 @@ defmodule Plasm.LatestTest do
 
   test ".latest with an atom field name" do
     # Arrange
-    query_date_time = Ecto.DateTime.cast!()
     insert(:user, inserted_at: Ecto.DateTime.cast!("2016-07-26T00:00:00Z"))
     insert(:user, inserted_at: Ecto.DateTime.cast!("2016-07-27T00:00:00Z"))
     latest_user = insert(:user, inserted_at: Ecto.DateTime.cast!("2016-07-28T00:00:00Z"))
