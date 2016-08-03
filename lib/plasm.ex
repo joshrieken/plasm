@@ -242,7 +242,7 @@ defmodule Plasm do
   @spec latest(Ecto.Queryable, atom) :: Ecto.Queryable
   def latest(query, field_name) when is_atom(field_name) do
     query
-    |> latest(1, field_name)
+    |> latest(field_name, 1)
   end
   @spec latest(Ecto.Queryable, atom, integer) :: Ecto.Queryable
   def latest(query, field_name, n) when is_atom(field_name) and is_integer(n) do
