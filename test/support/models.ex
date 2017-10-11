@@ -5,6 +5,6 @@ defmodule Plasm.User do
     field :name, :string
     field :age,  :integer
 
-    timestamps
+    timestamps(type: :utc_datetime)
   end
 end

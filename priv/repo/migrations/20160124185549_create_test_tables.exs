@@ -6,7 +6,7 @@ defmodule Plasm.Repo.Migrations.CreateTestTables do
       add :name, :string
       add :age,  :integer
 
-      timestamps
+      timestamps(type: :utc_datetime)
     end
   end
 end

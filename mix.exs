@@ -44,7 +44,7 @@ defmodule Plasm.Mixfile do
       {:ex_doc,     "~> 0.13",  only: [:dev]},
       {:earmark,    "~> 1.0.1", only: [:dev]},
       {:inch_ex,    "~> 0.5",   only: [:dev,     :test]},
-      {:ex_machina, "~> 1.0",   only: [:test]},
+      {:ex_machina, "~> 2.1",   only: [:test]},
       {:postgrex,   "> 0.0.0-rc",  optional: true},
     ]
   end
