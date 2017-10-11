@@ -7,7 +7,7 @@ defmodule Plasm.Mixfile do
     [
       app:             :plasm,
       version:         @version,
-      elixir:          "~> 1.0",
+      elixir:          ">= 1.3.4 and < 2.0.0",
       elixirc_paths:   elixirc_paths(Mix.env),
       build_embedded:  Mix.env == :prod,
       start_permanent: Mix.env == :prod,
