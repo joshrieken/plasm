@@ -11,10 +11,10 @@ defmodule Plasm.Mixfile do
       elixirc_paths:   elixirc_paths(Mix.env),
       build_embedded:  Mix.env == :prod,
       start_permanent: Mix.env == :prod,
-      deps:            deps,
-      description:     description,
-      package:         package,
-      aliases:         aliases,
+      deps:            deps(),
+      description:     description(),
+      package:         package(),
+      aliases:         aliases(),
       docs:            [extras: ["README.md", "CHANGELOG.md"]],
     ]
   end
