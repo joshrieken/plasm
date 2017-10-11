@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.0
+
+### Backwards-Incompatible Changes
+
+* Drop support for Elixir < 1.4 and Ecto < 2.2.0
+* Drop support for postgrex pre-releases
+
+
 ## 1.0.1
 
 ### Fixes

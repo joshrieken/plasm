@@ -189,7 +189,7 @@ Add Plasm to your list of dependencies in `mix.exs`:
 
 ``` elixir
 def deps do
-  [{:plasm, "~> 1.0.1"}]
+  [{:plasm, "~> 1.1"}]
 end
 ```
 
@@ -216,6 +216,6 @@ If you want to be on the bleeding edge, track the `master` branch of this repo:
 
 ## Copyright and License
 
-Copyright (c) 2016 Joshua Rieken.
+Copyright (c) 2016-2017 Joshua Rieken.
 
 Plasm source code is licensed under the Apache 2 License (see LICENSE.md).
