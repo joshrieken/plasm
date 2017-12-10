@@ -8,12 +8,12 @@ defmodule Plasm do
 
       Puppy |> Plasm.at(:updated_at, "2014-04-17T14:00:00Z") |> Repo.all
   """
-  @spec at(Ecto.Queryable, atom, %Ecto.DateTime{}) :: Ecto.Queryable
+  @spec at(Ecto.Queryable.t(), atom, %Ecto.DateTime{}) :: Ecto.Queryable.t()
   def at(query, field_name, %Ecto.DateTime{} = ecto_date_time) when is_atom(field_name) do
     query
     |> where([x], field(x, ^field_name) == type(^ecto_date_time, Ecto.DateTime))
   end
-  @spec at(Ecto.Queryable, atom, any) :: Ecto.Queryable
+  @spec at(Ecto.Queryable.t(), atom, any) :: Ecto.Queryable.t()
   def at(query, field_name, castable) when is_atom(field_name) do
     {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
     query
@@ -27,12 +27,12 @@ defmodule Plasm do
 
       Puppy |> Plasm.at_or_earlier_than(:updated_at, "2014-04-17") |> Repo.all
   """
-  @spec at_or_earlier_than(Ecto.Queryable, atom, %Ecto.DateTime{}) :: Ecto.Queryable
+  @spec at_or_earlier_than(Ecto.Queryable.t(), atom, %Ecto.DateTime{}) :: Ecto.Queryable.t()
   def at_or_earlier_than(query, field_name, %Ecto.DateTime{} = ecto_date_time) when is_atom(field_name) do
     query
     |> where([x], field(x, ^field_name) <= type(^ecto_date_time, Ecto.DateTime))
   end
-  @spec at_or_earlier_than(Ecto.Queryable, atom, any) :: Ecto.Queryable
+  @spec at_or_earlier_than(Ecto.Queryable.t(), atom, any) :: Ecto.Queryable.t()
   def at_or_earlier_than(query, field_name, castable) when is_atom(field_name) do
     {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
     query
@@ -46,12 +46,12 @@ defmodule Plasm do
 
       Puppy |> Plasm.at_or_later_than(:updated_at, "2014-04-17") |> Repo.all
   """
-  @spec at_or_later_than(Ecto.Queryable, atom, %Ecto.DateTime{}) :: Ecto.Queryable
+  @spec at_or_later_than(Ecto.Queryable.t(), atom, %Ecto.DateTime{}) :: Ecto.Queryable.t()
   def at_or_later_than(query, field_name, %Ecto.DateTime{} = ecto_date_time) when is_atom(field_name) do
     query
     |> where([x], field(x, ^field_name) >= type(^ecto_date_time, Ecto.DateTime))
   end
-  @spec at_or_later_than(Ecto.Queryable, atom, any) :: Ecto.Queryable
+  @spec at_or_later_than(Ecto.Queryable.t(), atom, any) :: Ecto.Queryable.t()
   def at_or_later_than(query, field_name, castable) when is_atom(field_name) do
     {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
     query
@@ -65,14 +65,14 @@ defmodule Plasm do
 
       Puppy |> Plasm.average("age") |> Repo.one
   """
-  @spec average(Ecto.Queryable, String.t) :: Ecto.Queryable
+  @spec average(Ecto.Queryable.t(), String.t) :: Ecto.Queryable.t()
   def average(query, field_name) when is_binary(field_name) do
     field_name = String.to_atom(field_name)
 
     query
     |> average(field_name)
   end
-  @spec average(Ecto.Queryable, atom) :: Ecto.Queryable
+  @spec average(Ecto.Queryable.t(), atom) :: Ecto.Queryable.t()
   def average(query, field_name) when is_atom(field_name) do
     query
     |> select([x], avg(field(x, ^field_name)))
@@ -83,7 +83,7 @@ defmodule Plasm do
 
       Puppy |> Plasm.count |> Repo.one
   """
-  @spec count(Ecto.Queryable) :: Ecto.Queryable
+  @spec count(Ecto.Queryable.t()) :: Ecto.Queryable.t()
   def count(query) do
     query
     |> select([x], count(x.id))
@@ -96,14 +96,14 @@ defmodule Plasm do
 
       Puppy |> Plasm.count_distinct("age") |> Repo.one
   """
-  @spec count_distinct(Ecto.Queryable, String.t) :: Ecto.Queryable
+  @spec count_distinct(Ecto.Queryable.t(), String.t) :: Ecto.Queryable.t()
   def count_distinct(query, field_name) when is_binary(field_name) do
     field_name = String.to_atom(field_name)
 
     query
     |> count_distinct(field_name)
   end
-  @spec count_distinct(Ecto.Queryable, atom) :: Ecto.Queryable
+  @spec count_distinct(Ecto.Queryable.t(), atom) :: Ecto.Queryable.t()
   def count_distinct(query, field_name) when is_atom(field_name) do
     query
     |> select([x], count(field(x, ^field_name), :distinct))
@@ -116,14 +116,14 @@ defmodule Plasm do
 
       Puppy |> Plasm.distinct_by("name") |> Repo.all
   """
-  @spec distinct_by(Ecto.Queryable, String.t) :: Ecto.Queryable
+  @spec distinct_by(Ecto.Queryable.t(), String.t) :: Ecto.Queryable.t()
   def distinct_by(query, field_name) when is_binary(field_name) do
     field_name = String.to_atom(field_name)
 
     query
     |> distinct_by(field_name)
   end
-  @spec distinct_by(Ecto.Queryable, atom) :: Ecto.Queryable
+  @spec distinct_by(Ecto.Queryable.t(), atom) :: Ecto.Queryable.t()
   def distinct_by(query, field_name) when is_atom(field_name) do
     query
     |> distinct([x], field(x, ^field_name))
@@ -136,17 +136,17 @@ defmodule Plasm do
 
       Puppy |> Plasm.earlier_than(:updated_at, "2014-04-17") |> Repo.all
   """
-  @spec earlier_than(Ecto.Queryable, atom, %Ecto.DateTime{}) :: Ecto.Queryable
+  @spec earlier_than(Ecto.Queryable.t(), atom, %Ecto.DateTime{}) :: Ecto.Queryable.t()
   def earlier_than(query, field_name, %Ecto.DateTime{} = ecto_date_time) when is_atom(field_name) do
     query
     |> where([x], field(x, ^field_name) < type(^ecto_date_time, Ecto.DateTime))
   end
-  @spec earlier_than(Ecto.Queryable, atom, %Ecto.Date{}) :: Ecto.Queryable
+  @spec earlier_than(Ecto.Queryable.t(), atom, %Ecto.Date{}) :: Ecto.Queryable.t()
   def earlier_than(query, field_name, %Ecto.Date{} = ecto_date) when is_atom(field_name) do
     query
     |> where([x], field(x, ^field_name) < type(^ecto_date, Ecto.Date))
   end
-  @spec earlier_than(Ecto.Queryable, atom, any) :: Ecto.Queryable
+  @spec earlier_than(Ecto.Queryable.t(), atom, any) :: Ecto.Queryable.t()
   def earlier_than(query, field_name, castable) when is_atom(field_name) do
     value = case Ecto.DateTime.cast(castable) do
       {:ok, ecto_date_time} -> ecto_date_time
@@ -166,14 +166,14 @@ defmodule Plasm do
 
       Puppy |> Plasm.find("748192739812839") |> Repo.one
   """
-  @spec find(Ecto.Queryable, list) :: Ecto.Queryable
+  @spec find(Ecto.Queryable.t(), list) :: Ecto.Queryable.t()
   def find(query, primary_key_values) when is_list(primary_key_values) do
     key = primary_key(query)
 
     query
     |> where_all([{key, primary_key_values}])
   end
-  @spec find(Ecto.Queryable, any) :: Ecto.Queryable
+  @spec find(Ecto.Queryable.t(), any) :: Ecto.Queryable.t()
   def find(query, primary_key_value) do
     key = primary_key(query)
 
@@ -190,12 +190,12 @@ defmodule Plasm do
 
       Puppy |> Plasm.earliest(:inserted_at, 20) |> Repo.all
   """
-  @spec earliest(Ecto.Queryable, atom) :: Ecto.Queryable
+  @spec earliest(Ecto.Queryable.t(), atom) :: Ecto.Queryable.t()
   def earliest(query, field_name) when is_atom(field_name) do
     query
     |> earliest(field_name, 1)
   end
-  @spec earliest(Ecto.Queryable, atom, integer) :: Ecto.Queryable
+  @spec earliest(Ecto.Queryable.t(), atom, integer) :: Ecto.Queryable.t()
   def earliest(query, field_name, n) when is_atom(field_name) and is_integer(n) do
     query
     |> order_by(asc: ^field_name)
@@ -209,17 +209,17 @@ defmodule Plasm do
 
       Puppy |> Plasm.later_than("2014-04-17") |> Repo.all
   """
-  @spec later_than(Ecto.Queryable, atom, %Ecto.DateTime{}) :: Ecto.Queryable
+  @spec later_than(Ecto.Queryable.t(), atom, %Ecto.DateTime{}) :: Ecto.Queryable.t()
   def later_than(query, field_name, %Ecto.DateTime{} = ecto_date_time) when is_atom(field_name) do
     query
     |> where([x], field(x, ^field_name) > type(^ecto_date_time, Ecto.DateTime))
   end
-  @spec later_than(Ecto.Queryable, atom, %Ecto.Date{}) :: Ecto.Queryable
+  @spec later_than(Ecto.Queryable.t(), atom, %Ecto.Date{}) :: Ecto.Queryable.t()
   def later_than(query, field_name, %Ecto.Date{} = ecto_date) when is_atom(field_name) do
     query
     |> where([x], field(x, ^field_name) > type(^ecto_date, Ecto.Date))
   end
-  @spec later_than(Ecto.Queryable, atom, any) :: Ecto.Queryable
+  @spec later_than(Ecto.Queryable.t(), atom, any) :: Ecto.Queryable.t()
   def later_than(query, field_name, castable) when is_atom(field_name) do
     value = case Ecto.DateTime.cast(castable) do
       {:ok, ecto_date_time} -> ecto_date_time
@@ -239,12 +239,12 @@ defmodule Plasm do
 
       Puppy |> Plasm.latest(:inserted_at, 20) |> Repo.all
   """
-  @spec latest(Ecto.Queryable, atom) :: Ecto.Queryable
+  @spec latest(Ecto.Queryable.t(), atom) :: Ecto.Queryable.t()
   def latest(query, field_name) when is_atom(field_name) do
     query
     |> latest(field_name, 1)
   end
-  @spec latest(Ecto.Queryable, atom, integer) :: Ecto.Queryable
+  @spec latest(Ecto.Queryable.t(), atom, integer) :: Ecto.Queryable.t()
   def latest(query, field_name, n) when is_atom(field_name) and is_integer(n) do
     query
     |> order_by(desc: ^field_name)
@@ -258,15 +258,14 @@ defmodule Plasm do
 
       Puppy |> Plasm.maximum("age") |> Repo.one
   """
-  # @spec maximum(Ecto.Queryable, String.t) :: Ecto.Queryable
-  @spec maximum(Ecto.Queryable, String.t) :: Ecto.Queryable
+  @spec maximum(Ecto.Queryable.t(), String.t) :: Ecto.Queryable.t()
   def maximum(query, field_name) when is_binary(field_name) do
     field_name = String.to_atom(field_name)
 
     query
     |> maximum(field_name)
   end
-  @spec maximum(Ecto.Queryable, atom) :: Ecto.Queryable
+  @spec maximum(Ecto.Queryable.t(), atom) :: Ecto.Queryable.t()
   def maximum(query, field_name) when is_atom(field_name) do
     query
     |> select([x], max(field(x, ^field_name)))
@@ -279,14 +278,14 @@ defmodule Plasm do
 
       Puppy |> Plasm.minimum("age") |> Repo.one
   """
-  @spec minimum(Ecto.Queryable, String.t) :: Ecto.Queryable
+  @spec minimum(Ecto.Queryable.t(), String.t) :: Ecto.Queryable.t()
   def minimum(query, field_name) when is_binary(field_name) do
     field_name = String.to_atom(field_name)
 
     query
     |> minimum(field_name)
   end
-  @spec minimum(Ecto.Queryable, atom) :: Ecto.Queryable
+  @spec minimum(Ecto.Queryable.t(), atom) :: Ecto.Queryable.t()
   def minimum(query, field_name) when is_atom(field_name) do
     query
     |> select([x], min(field(x, ^field_name)))
@@ -299,7 +298,7 @@ defmodule Plasm do
 
       Puppy |> Plasm.on(:inserted_at, "2014-04-17") |> Repo.all
   """
-  @spec on(Ecto.Queryable, atom, %Ecto.Date{}) :: Ecto.Queryable
+  @spec on(Ecto.Queryable.t(), atom, %Ecto.Date{}) :: Ecto.Queryable.t()
   def on(query, field_name, %Ecto.Date{} = ecto_date) when is_atom(field_name) do
     next_day_ecto_date =
       ecto_date
@@ -312,7 +311,7 @@ defmodule Plasm do
     query
     |> where([x], field(x, ^field_name) >= type(^ecto_date, Ecto.Date) and field(x, ^field_name) < type(^next_day_ecto_date, Ecto.Date))
   end
-  @spec on(Ecto.Queryable, atom, any) :: Ecto.Queryable
+  @spec on(Ecto.Queryable.t(), atom, any) :: Ecto.Queryable.t()
   def on(query, field_name, castable) when is_atom(field_name) do
     {:ok, ecto_date} = Ecto.Date.cast(castable)
     query
@@ -326,7 +325,7 @@ defmodule Plasm do
 
       Puppy |> Plasm.on_or_earlier_than("2014-04-17") |> Repo.all
   """
-  @spec on_or_earlier_than(Ecto.Queryable, atom, %Ecto.Date{}) :: Ecto.Queryable
+  @spec on_or_earlier_than(Ecto.Queryable.t(), atom, %Ecto.Date{}) :: Ecto.Queryable.t()
   def on_or_earlier_than(query, field_name, %Ecto.Date{} = ecto_date) when is_atom(field_name) do
     next_day_ecto_date =
       ecto_date
@@ -339,7 +338,7 @@ defmodule Plasm do
     query
     |> where([x], field(x, ^field_name) < type(^next_day_ecto_date, Ecto.Date))
   end
-  @spec on_or_earlier_than(Ecto.Queryable, atom, any) :: Ecto.Queryable
+  @spec on_or_earlier_than(Ecto.Queryable.t(), atom, any) :: Ecto.Queryable.t()
   def on_or_earlier_than(query, field_name, castable) when is_atom(field_name) do
     {:ok, ecto_date} = Ecto.Date.cast(castable)
     query
@@ -353,12 +352,12 @@ defmodule Plasm do
 
       Puppy |> Plasm.on_or_later_than("2014-04-17") |> Repo.all
   """
-  @spec on_or_later_than(Ecto.Queryable, atom, %Ecto.Date{}) :: Ecto.Queryable
+  @spec on_or_later_than(Ecto.Queryable.t(), atom, %Ecto.Date{}) :: Ecto.Queryable.t()
   def on_or_later_than(query, field_name, %Ecto.Date{} = ecto_date) when is_atom(field_name) do
     query
     |> where([x], field(x, ^field_name) >= type(^ecto_date, Ecto.Date))
   end
-  @spec on_or_later_than(Ecto.Queryable, atom, any) :: Ecto.Queryable
+  @spec on_or_later_than(Ecto.Queryable.t(), atom, any) :: Ecto.Queryable.t()
   def on_or_later_than(query, field_name, castable) when is_atom(field_name) do
     {:ok, ecto_date} = Ecto.Date.cast(castable)
     query
@@ -374,12 +373,12 @@ defmodule Plasm do
 
       Puppy |> Plasm.random(20) |> Repo.all
   """
-  @spec random(Ecto.Queryable) :: Ecto.Queryable
+  @spec random(Ecto.Queryable.t()) :: Ecto.Queryable.t()
   def random(query) do
     query
     |> random(1)
   end
-  @spec random(Ecto.Queryable, integer) :: Ecto.Queryable
+  @spec random(Ecto.Queryable.t(), integer) :: Ecto.Queryable.t()
   def random(query, n) when is_integer(n) do
     # TODO: support databases other than postgres
     query
@@ -394,14 +393,14 @@ defmodule Plasm do
 
       Puppy |> Plasm.total("age") |> Repo.one
   """
-  @spec total(Ecto.Queryable, String.t) :: Ecto.Queryable
+  @spec total(Ecto.Queryable.t(), String.t) :: Ecto.Queryable.t()
   def total(query, field_name) when is_binary(field_name) do
     field_name = String.to_atom(field_name)
 
     query
     |> total(field_name)
   end
-  @spec total(Ecto.Queryable, atom) :: Ecto.Queryable
+  @spec total(Ecto.Queryable.t(), atom) :: Ecto.Queryable.t()
   def total(query, field_name) when is_atom(field_name) do
     query
     |> select([x], sum(field(x, ^field_name)))
@@ -420,7 +419,7 @@ defmodule Plasm do
 
       Puppy |> Plasm.where_all(name: "Fluffy", age: [3,5,10]) |> Repo.all
   """
-  @spec where_all(Ecto.Queryable, list) :: Ecto.Queryable
+  @spec where_all(Ecto.Queryable.t(), list) :: Ecto.Queryable.t()
   def where_all(query, field_names_and_values) do
     contains_at_least_one_list = Keyword.values(field_names_and_values)
                                  |> Enum.any?(fn (value) -> is_list(value) end)
@@ -441,7 +440,7 @@ defmodule Plasm do
 
       Puppy |> Plasm.where_none(name: "Fluffy", age: [3,5,10]) |> Repo.all
   """
-  @spec where_none(Ecto.Queryable, list) :: Ecto.Queryable
+  @spec where_none(Ecto.Queryable.t(), list) :: Ecto.Queryable.t()
   def where_none(query, field_names_and_values) do
     Enum.reduce(field_names_and_values, query, fn ({field_name, field_value}, query) ->
       generate_where_clause_for_where_none(query, field_name, field_value)
