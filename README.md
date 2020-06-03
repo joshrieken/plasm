@@ -189,7 +189,7 @@ Add Plasm to your list of dependencies in `mix.exs`:
 
 ``` elixir
 def deps do
-  [{:plasm, "~> 1.1"}]
+  [{:plasm, "~> 2.0"}]
 end
 ```
 

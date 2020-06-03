@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.0
+
+### Backwards-Incompatible Changes
+
+* Support only Ecto 3
+
+
 ## 1.1.0
 
 ### Backwards-Incompatible Changes
