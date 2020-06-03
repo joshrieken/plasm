@@ -27,7 +27,7 @@ defmodule Plasm do
 
       Puppy |> Plasm.at_or_earlier_than(:updated_at, "2014-04-17") |> Repo.all
   """
-  @spec at_or_earlier_than(Ecto.Queryable.t(), atom, %DateTime{}) :: Ecto.Queryable.to()
+  @spec at_or_earlier_than(Ecto.Queryable.t(), atom, %DateTime{}) :: Ecto.Queryable.t()
   def at_or_earlier_than(query, field_name, %DateTime{} = date_time) when is_atom(field_name) do
     query
     |> where([x], field(x, ^field_name) <= ^date_time)
