@@ -142,7 +142,7 @@ To avoid conflicts when `import`ing. For instance, `Plasm.min\2` and `Plasm.max\
 
 ## Note On DB Support
 
-Plasm aims to support all DBs supported by Ecto, but we're not quite there yet. Right now, the only functions that don't work cross-DB are `random\1` and `random\2`, which are supported only on PostgreSQL for now.
+Guaranteed to work with Postgres; others might work but haven't been tested.
 
 
 ## Note On Query Syntaxes
@@ -216,6 +216,6 @@ If you want to be on the bleeding edge, track the `master` branch of this repo:
 
 ## Copyright and License
 
-Copyright (c) 2016-2017 Joshua Rieken.
+Copyright (c) 2016-2020 Joshua Rieken.
 
 Plasm source code is licensed under the Apache 2 License (see LICENSE.md).

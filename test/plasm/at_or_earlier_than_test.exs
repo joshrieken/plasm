@@ -6,15 +6,16 @@ defmodule Plasm.AtOrEarlierThanTest do
 
   import Plasm.Factory
 
-  test ".at_or_earlier_than with an Ecto.DateTime" do
+  test ".at_or_earlier_than with a DateTime" do
     # Arrange
     castable_string = "2016-07-27T00:00:00Z"
+    {:ok, date_time, _} = DateTime.from_iso8601(castable_string)
     earlier_user = insert(:user, inserted_at: "2016-07-26T00:00:00Z")
     exact_match_user = insert(:user, inserted_at: castable_string)
     later_user = insert(:user, inserted_at: "2016-07-28T00:00:00Z")
 
     # Act
-    user_ids = User |> Plasm.at_or_earlier_than(:inserted_at, Ecto.DateTime.cast!(castable_string)) |> Repo.all() |> Enum.map(&(&1.id))
+    user_ids = User |> Plasm.at_or_earlier_than(:inserted_at, date_time) |> Repo.all() |> Enum.map(&(&1.id))
 
     # require IEx; IEx.pry
 
@@ -24,7 +25,7 @@ defmodule Plasm.AtOrEarlierThanTest do
     refute Enum.member?(user_ids, later_user.id)
   end
 
-  test ".at_or_earlier_than with a castable Ecto.DateTime" do
+  test ".at_or_earlier_than with a castable string" do
     # Arrange
     castable_string = "2016-07-27T00:00:00Z"
     earlier_user = insert(:user, inserted_at: "2016-07-26T00:00:00Z")

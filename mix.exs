@@ -40,12 +40,12 @@ defmodule Plasm.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:ecto,       "~> 2.2"},
       {:ex_doc,     "~> 0.13",  only: [:dev]},
       {:earmark,    "~> 1.0.1", only: [:dev]},
-      {:inch_ex,    "~> 0.5",   only: [:dev,     :test]},
-      {:ex_machina, "~> 2.1",   only: [:test]},
+      {:inch_ex,    "~> 0.5",   only: [:dev, :test]},
+      {:ex_machina, "~> 2.4",   only: [:dev, :test]},
       {:postgrex,   "> 0.0.0",  optional: true},
+      {:ecto_sql,   "~> 3.0",   optional: true},
     ]
   end
 
@@ -65,11 +65,11 @@ defmodule Plasm.Mixfile do
   end
 
   defp elixirc_paths(:test), do: ["lib", "test/support"]
-  defp elixirc_paths(_),     do: ["lib"]
+  defp elixirc_paths(_),     do: ["lib", "test/support"]
 
   defp aliases do
     [
-      "test": ["ecto.create --quiet", "ecto.migrate", "test"],
+      test: ["ecto.create --quiet", "ecto.migrate", "test"],
       "test.setup": ["ecto.create", "ecto.migrate"],
       "test.reset": ["ecto.drop", "test.setup"],
     ]

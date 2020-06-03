@@ -4,58 +4,58 @@ defmodule Plasm do
   @doc """
   Builds a query that finds all records at a specified date and time for a specified field name.
 
-      Puppy |> Plasm.at(:updated_at, ecto_date_time) |> Repo.all
+      Puppy |> Plasm.at(:updated_at, date_time) |> Repo.all
 
       Puppy |> Plasm.at(:updated_at, "2014-04-17T14:00:00Z") |> Repo.all
   """
-  @spec at(Ecto.Queryable.t(), atom, %Ecto.DateTime{}) :: Ecto.Queryable.t()
-  def at(query, field_name, %Ecto.DateTime{} = ecto_date_time) when is_atom(field_name) do
+  @spec at(Ecto.Queryable.t(), atom, %DateTime{}) :: Ecto.Queryable.t()
+  def at(query, field_name, %DateTime{} = date_time) when is_atom(field_name) do
     query
-    |> where([x], field(x, ^field_name) == type(^ecto_date_time, Ecto.DateTime))
+    |> where([x], field(x, ^field_name) == ^date_time)
   end
   @spec at(Ecto.Queryable.t(), atom, any) :: Ecto.Queryable.t()
   def at(query, field_name, castable) when is_atom(field_name) do
-    {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
+    date_time = cast_to_date_time!(castable)
     query
-    |> at(field_name, ecto_date_time)
+    |> at(field_name, date_time)
   end
 
   @doc """
   Builds a query that finds all records at or before a specified date and time for a specified field name.
 
-      Puppy |> Plasm.at_or_earlier_than(:updated_at, ecto_date_time) |> Repo.all
+      Puppy |> Plasm.at_or_earlier_than(:updated_at, date_time) |> Repo.all
 
       Puppy |> Plasm.at_or_earlier_than(:updated_at, "2014-04-17") |> Repo.all
   """
-  @spec at_or_earlier_than(Ecto.Queryable.t(), atom, %Ecto.DateTime{}) :: Ecto.Queryable.t()
-  def at_or_earlier_than(query, field_name, %Ecto.DateTime{} = ecto_date_time) when is_atom(field_name) do
+  @spec at_or_earlier_than(Ecto.Queryable.t(), atom, %DateTime{}) :: Ecto.Queryable.to()
+  def at_or_earlier_than(query, field_name, %DateTime{} = date_time) when is_atom(field_name) do
     query
-    |> where([x], field(x, ^field_name) <= type(^ecto_date_time, Ecto.DateTime))
+    |> where([x], field(x, ^field_name) <= ^date_time)
   end
   @spec at_or_earlier_than(Ecto.Queryable.t(), atom, any) :: Ecto.Queryable.t()
   def at_or_earlier_than(query, field_name, castable) when is_atom(field_name) do
-    {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
+    date_time = cast_to_date_time!(castable)
     query
-    |> at_or_earlier_than(field_name, ecto_date_time)
+    |> at_or_earlier_than(field_name, date_time)
   end
 
   @doc """
   Builds a query that finds all records at a specified date and time for a specified field name.
 
-      Puppy |> Plasm.at_or_later_than(:updated_at, ecto_date_time) |> Repo.all
+      Puppy |> Plasm.at_or_later_than(:updated_at, date_time) |> Repo.all
 
       Puppy |> Plasm.at_or_later_than(:updated_at, "2014-04-17") |> Repo.all
   """
-  @spec at_or_later_than(Ecto.Queryable.t(), atom, %Ecto.DateTime{}) :: Ecto.Queryable.t()
-  def at_or_later_than(query, field_name, %Ecto.DateTime{} = ecto_date_time) when is_atom(field_name) do
+  @spec at_or_later_than(Ecto.Queryable.t(), atom, %DateTime{}) :: Ecto.Queryable.t()
+  def at_or_later_than(query, field_name, %DateTime{} = date_time) when is_atom(field_name) do
     query
-    |> where([x], field(x, ^field_name) >= type(^ecto_date_time, Ecto.DateTime))
+    |> where([x], field(x, ^field_name) >= ^date_time)
   end
   @spec at_or_later_than(Ecto.Queryable.t(), atom, any) :: Ecto.Queryable.t()
   def at_or_later_than(query, field_name, castable) when is_atom(field_name) do
-    {:ok, ecto_date_time} = Ecto.DateTime.cast(castable)
+    date_time = cast_to_date_time!(castable)
     query
-    |> at_or_later_than(field_name, ecto_date_time)
+    |> at_or_later_than(field_name, date_time)
   end
 
   @doc """
@@ -132,29 +132,31 @@ defmodule Plasm do
   @doc """
   Builds a query that finds all records before a specified date or date and time for a specified field name.
 
-      Puppy |> Plasm.earlier_than(:updated_at, ecto_date_or_date_time) |> Repo.all
+      Puppy |> Plasm.earlier_than(:updated_at, date_or_date_time) |> Repo.all
 
       Puppy |> Plasm.earlier_than(:updated_at, "2014-04-17") |> Repo.all
   """
-  @spec earlier_than(Ecto.Queryable.t(), atom, %Ecto.DateTime{}) :: Ecto.Queryable.t()
-  def earlier_than(query, field_name, %Ecto.DateTime{} = ecto_date_time) when is_atom(field_name) do
+  @spec earlier_than(Ecto.Queryable.t(), atom, %Date{}) :: Ecto.Queryable.t()
+  def earlier_than(query, field_name, %Date{} = date) when is_atom(field_name) do
     query
-    |> where([x], field(x, ^field_name) < type(^ecto_date_time, Ecto.DateTime))
+    |> where([x], fragment("?::date", field(x, ^field_name)) < ^date)
   end
-  @spec earlier_than(Ecto.Queryable.t(), atom, %Ecto.Date{}) :: Ecto.Queryable.t()
-  def earlier_than(query, field_name, %Ecto.Date{} = ecto_date) when is_atom(field_name) do
+  @spec earlier_than(Ecto.Queryable.t(), atom, %DateTime{}) :: Ecto.Queryable.t()
+  def earlier_than(query, field_name, %DateTime{} = date_time) when is_atom(field_name) do
+    date = DateTime.to_date(date_time)
+
     query
-    |> where([x], field(x, ^field_name) < type(^ecto_date, Ecto.Date))
+    |> earlier_than(field_name, date)
   end
-  @spec earlier_than(Ecto.Queryable.t(), atom, any) :: Ecto.Queryable.t()
-  def earlier_than(query, field_name, castable) when is_atom(field_name) do
-    value = case Ecto.DateTime.cast(castable) do
-      {:ok, ecto_date_time} -> ecto_date_time
-      :error -> Ecto.Date.cast!(castable)
+  @spec earlier_than(Ecto.Queryable.t(), atom, String.t | number) :: Ecto.Queryable.t()
+  def earlier_than(query, field_name, castable) when is_atom(field_name) and is_binary(castable) or is_number(castable) do
+    date_or_date_time = case cast_to_date_time(castable) do
+      {:ok, date_time} -> date_time
+      :error -> cast_to_date!(castable)
     end
 
     query
-    |> earlier_than(field_name, value)
+    |> earlier_than(field_name, date_or_date_time)
   end
 
   @doc """
@@ -205,25 +207,27 @@ defmodule Plasm do
   @doc """
   Builds a query that finds all records after a specified field name and date or date and time.
 
-      Puppy |> Plasm.later_than(ecto_date_or_date_time) |> Repo.all
+      Puppy |> Plasm.later_than(date) |> Repo.all
 
       Puppy |> Plasm.later_than("2014-04-17") |> Repo.all
   """
-  @spec later_than(Ecto.Queryable.t(), atom, %Ecto.DateTime{}) :: Ecto.Queryable.t()
-  def later_than(query, field_name, %Ecto.DateTime{} = ecto_date_time) when is_atom(field_name) do
+  @spec later_than(Ecto.Queryable.t(), atom, %Date{}) :: Ecto.Queryable.t()
+  def later_than(query, field_name, %Date{} = date) when is_atom(field_name) do
     query
-    |> where([x], field(x, ^field_name) > type(^ecto_date_time, Ecto.DateTime))
+    |> where([x], fragment("?::date", field(x, ^field_name)) > ^date)
   end
-  @spec later_than(Ecto.Queryable.t(), atom, %Ecto.Date{}) :: Ecto.Queryable.t()
-  def later_than(query, field_name, %Ecto.Date{} = ecto_date) when is_atom(field_name) do
+  @spec later_than(Ecto.Queryable.t(), atom, %DateTime{}) :: Ecto.Queryable.t()
+  def later_than(query, field_name, %DateTime{} = date_time) when is_atom(field_name) do
+    date = DateTime.to_date(date_time)
+
     query
-    |> where([x], field(x, ^field_name) > type(^ecto_date, Ecto.Date))
+    |> later_than(field_name, date)
   end
-  @spec later_than(Ecto.Queryable.t(), atom, any) :: Ecto.Queryable.t()
-  def later_than(query, field_name, castable) when is_atom(field_name) do
-    value = case Ecto.DateTime.cast(castable) do
-      {:ok, ecto_date_time} -> ecto_date_time
-      :error -> Ecto.Date.cast!(castable)
+  @spec later_than(Ecto.Queryable.t(), atom, String.t | number) :: Ecto.Queryable.t()
+  def later_than(query, field_name, castable) when is_atom(field_name) and is_binary(castable) or is_number(castable) do
+    value = case cast_to_date_time(castable) do
+      {:ok, date_time} -> date_time
+      :error -> cast_to_date!(castable)
     end
 
     query
@@ -294,74 +298,66 @@ defmodule Plasm do
   @doc """
   Builds a query that finds all records on a specified date for a specified field name.
 
-      Puppy |> Plasm.on(:inserted_at, ecto_date) |> Repo.all
+      Puppy |> Plasm.on(:inserted_at, date) |> Repo.all
 
       Puppy |> Plasm.on(:inserted_at, "2014-04-17") |> Repo.all
   """
-  @spec on(Ecto.Queryable.t(), atom, %Ecto.Date{}) :: Ecto.Queryable.t()
-  def on(query, field_name, %Ecto.Date{} = ecto_date) when is_atom(field_name) do
-    next_day_ecto_date =
-      ecto_date
-      |> Ecto.Date.to_erl
-      |> :calendar.date_to_gregorian_days
-      |> Kernel.+(1)
-      |> :calendar.gregorian_days_to_date
-      |> Ecto.Date.from_erl
-
+  @spec on(Ecto.Queryable.t(), atom, %Date{}) :: Ecto.Queryable.t()
+  def on(query, field_name, %Date{} = date) when is_atom(field_name) do
     query
-    |> where([x], field(x, ^field_name) >= type(^ecto_date, Ecto.Date) and field(x, ^field_name) < type(^next_day_ecto_date, Ecto.Date))
+    |> where([x], fragment("?::date", field(x, ^field_name)) == ^date)
   end
   @spec on(Ecto.Queryable.t(), atom, any) :: Ecto.Queryable.t()
   def on(query, field_name, castable) when is_atom(field_name) do
-    {:ok, ecto_date} = Ecto.Date.cast(castable)
+    date = cast_to_date!(castable)
     query
-    |> on(field_name, ecto_date)
+    |> on(field_name, date)
   end
 
   @doc """
   Builds a query that finds all records on or before a specified date for a specified field name.
 
-      Puppy |> Plasm.on_or_earlier_than(ecto_date) |> Repo.all
+      Puppy |> Plasm.on_or_earlier_than(date) |> Repo.all
 
       Puppy |> Plasm.on_or_earlier_than("2014-04-17") |> Repo.all
   """
-  @spec on_or_earlier_than(Ecto.Queryable.t(), atom, %Ecto.Date{}) :: Ecto.Queryable.t()
-  def on_or_earlier_than(query, field_name, %Ecto.Date{} = ecto_date) when is_atom(field_name) do
-    next_day_ecto_date =
-      ecto_date
-      |> Ecto.Date.to_erl
+  @spec on_or_earlier_than(Ecto.Queryable.t(), atom, %Date{}) :: Ecto.Queryable.t()
+  def on_or_earlier_than(query, field_name, %Date{} = date) when is_atom(field_name) do
+    {:ok, next_day_date} =
+      date
+      |> Date.to_erl
       |> :calendar.date_to_gregorian_days
       |> Kernel.+(1)
       |> :calendar.gregorian_days_to_date
-      |> Ecto.Date.from_erl
+      |> Date.from_erl
 
     query
-    |> where([x], field(x, ^field_name) < type(^next_day_ecto_date, Ecto.Date))
+    |> where([x], fragment("?::date", field(x, ^field_name)) < ^next_day_date)
   end
   @spec on_or_earlier_than(Ecto.Queryable.t(), atom, any) :: Ecto.Queryable.t()
   def on_or_earlier_than(query, field_name, castable) when is_atom(field_name) do
-    {:ok, ecto_date} = Ecto.Date.cast(castable)
+    date = cast_to_date!(castable)
     query
-    |> on_or_earlier_than(field_name, ecto_date)
+    |> on_or_earlier_than(field_name, date)
   end
 
   @doc """
   Builds a query that finds all records on or after a specified date for a specified field name.
 
-      Puppy |> Plasm.on_or_later_than(ecto_date) |> Repo.all
+      Puppy |> Plasm.on_or_later_than(date) |> Repo.all
 
       Puppy |> Plasm.on_or_later_than("2014-04-17") |> Repo.all
   """
-  @spec on_or_later_than(Ecto.Queryable.t(), atom, %Ecto.Date{}) :: Ecto.Queryable.t()
-  def on_or_later_than(query, field_name, %Ecto.Date{} = ecto_date) when is_atom(field_name) do
+  @spec on_or_later_than(Ecto.Queryable.t(), atom, %Date{}) :: Ecto.Queryable.t()
+  def on_or_later_than(query, field_name, %Date{} = date) when is_atom(field_name) do
     query
-    |> where([x], field(x, ^field_name) >= type(^ecto_date, Ecto.Date))
+    |> where([x], fragment("?::date", field(x, ^field_name)) >= ^date)
   end
   @spec on_or_later_than(Ecto.Queryable.t(), atom, any) :: Ecto.Queryable.t()
   def on_or_later_than(query, field_name, castable) when is_atom(field_name) do
-    {:ok, ecto_date} = Ecto.Date.cast(castable)
+    date = cast_to_date!(castable)
     query
-    |> on_or_later_than(field_name, ecto_date)
+    |> on_or_later_than(field_name, date)
   end
 
   @doc """
@@ -473,7 +469,7 @@ defmodule Plasm do
 
   defp generate_where_clause_for_where_none(query, field_name, field_value) when is_list(field_value) do
     query
-    |> where([x], not field(x, ^field_name) in ^field_value)
+    |> where([x], field(x, ^field_name) not in ^field_value)
   end
   defp generate_where_clause_for_where_none(query, field_name, field_value) do
     query
@@ -489,5 +485,41 @@ defmodule Plasm do
   defp do_where_all(query, field_names_and_values, false) do
     query
     |> where(^field_names_and_values)
+  end
+
+  defp cast_to_date_time(castable) when is_binary(castable) do
+    case DateTime.from_iso8601(castable) do
+      {:ok, date_time, _} -> {:ok, date_time}
+      {:error, _} -> :error
+    end
+  end
+
+  defp cast_to_date_time(castable) when is_number(castable) do
+    case DateTime.from_unix(castable) do
+      {:ok, date_time} -> {:ok, date_time}
+      {:error, _} -> :error
+    end
+  end
+
+  defp cast_to_date_time!(castable) when is_binary(castable) do
+    case DateTime.from_iso8601(castable) do
+      {:ok, date_time, _} -> date_time
+      {:error, _} -> raise ArgumentError, message: "invalid argument when casting to DateTime: #{inspect(castable)}"
+    end
+  end
+
+  defp cast_to_date_time!(castable) when is_number(castable) do
+    case DateTime.from_unix(castable) do
+      {:ok, date_time} -> date_time
+      {:error, _} -> raise ArgumentError, message: "invalid argument when casting to DateTime: #{inspect(castable)}"
+    end
+  end
+
+  defp cast_to_date!(castable) do
+    case Date.from_iso8601(castable) do
+      {:ok, date} -> date
+      {:error, _} ->
+        raise ArgumentError, message: "invalid argument when casting to Date: #{inspect(castable)}"
+    end
   end
 end

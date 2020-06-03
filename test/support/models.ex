@@ -4,6 +4,7 @@ defmodule Plasm.User do
   schema "users" do
     field :name, :string
     field :age,  :integer
+    field :date_of_birth, :date
 
     timestamps(type: :utc_datetime)
   end
