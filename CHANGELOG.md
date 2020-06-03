@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.1
+
+### Fixes
+
+* Minor typespec fix
+
+
 ## 2.0.0
 
 ### Backwards-Incompatible Changes
