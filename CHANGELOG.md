@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.0.2
+
+### Fixes
+
+* Fixed issue when finding primary key when a query is passed
+* No longer load test assets in non-test envs
+
+
 ## 2.0.1
 
 ### Fixes
