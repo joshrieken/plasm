@@ -33,4 +33,17 @@ defmodule Plasm.FindTest do
     # Assert
     assert user == user1
   end
+
+  test ".find with an integer and a prior query" do
+    # Arrange
+    user1 = insert(:user, age: 18)
+    insert(:user, age: 18)
+    insert(:user, age: 81)
+
+    # Act
+    user = User |> User.for_age(18) |> Plasm.find(user1.id) |> Repo.one
+
+    # Assert
+    assert user == user1
+  end
 end

@@ -453,7 +453,7 @@ defmodule Plasm do
     key
   end
 
-  defp model(%Ecto.Query{from: {_table_name, model_or_query}}) do
+  defp model(%Ecto.Query{from: %Ecto.Query.FromExpr{source: {_, model_or_query}}}) do
     model(model_or_query)
   end
   defp model(model), do: model
